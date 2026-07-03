@@ -521,6 +521,39 @@
       transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
     }
 
+    .map-marker.map-city {
+      background: rgba(79, 17, 22, 0.84);
+    }
+
+    .map-marker.map-water {
+      background: rgba(35, 67, 88, 0.82);
+      color: #e6f4ff;
+    }
+
+    .map-marker.map-region {
+      background: rgba(49, 72, 39, 0.80);
+      color: #f0f8d4;
+    }
+
+    .map-marker.map-route {
+      background: rgba(75, 46, 20, 0.84);
+      border-style: dashed;
+    }
+
+    .map-marker.map-landmark {
+      background: rgba(54, 48, 42, 0.84);
+    }
+
+    .map-marker.map-minor {
+      font-size: clamp(0.55rem, 1.1vw, 0.72rem);
+      padding: 4px 7px;
+    }
+
+    .map-marker.map-minor::before {
+      width: 6px;
+      height: 6px;
+    }
+
     .map-marker::before {
       content: "";
       width: 8px;
@@ -871,6 +904,8 @@
           <div class="legend-item"><span class="swatch" style="background:#8d5d24"></span> Orkische Gebiete</div>
           <div class="legend-item"><span class="swatch" style="background:#5a5a5a"></span> Zwergenmacht</div>
           <div class="legend-item"><span class="swatch" style="background:#496f86"></span> Neutraler Seehandel</div>
+          <div class="legend-item"><span class="swatch" style="background:#3e7895"></span> Gewässer und Engstellen</div>
+          <div class="legend-item"><span class="swatch" style="background:#7b5a28"></span> Handelsrouten</div>
         </div>
       </nav>
 
@@ -1339,13 +1374,32 @@
     ];
 
     const markerData = [
-      { id: "valdoria", label: "Valdoria", x: "22%", y: "61%", color: "#7b1f25", tip: "Menschliches Kaiserreich auf Caldria, geschwächte Supermacht." },
-      { id: "geografie", label: "Caldria", x: "18%", y: "45%", color: "#b67c2d", tip: "Westliche Großinsel, fast vollständig menschlich geprägt." },
-      { id: "elyndra", label: "Elyndra", x: "63%", y: "30%", color: "#3f5f42", tip: "Elfenreich im Nordwesten der östlichen Landmasse." },
-      { id: "dhuram-khaz", label: "Dhuram-Khaz", x: "67%", y: "49%", color: "#5a5a5a", tip: "Zwergenmacht im zentralen Gebirge." },
-      { id: "gorash", label: "Gorash", x: "67%", y: "69%", color: "#8d5d24", tip: "Orkischer Stammesbund in südlichen Wüsten und Oasen." },
-      { id: "morovia", label: "Morovia", x: "58.7%", y: "49.1%", color: "#496f86", tip: "Neutraler Freihafen an einem entscheidenden Seeweg." },
-      { id: "voelker", label: "Feenlande", x: "86%", y: "27%", color: "#6b8c6f", tip: "Dichter nordöstlicher Dschungel, wichtigste Feenregion." }
+      { id: "geografie", kind: "region", label: "Caldria", x: "18%", y: "42%", color: "#b67c2d", tip: "Westliche Großinsel; fast vollständig menschlich geprägt." },
+      { id: "valdoria", kind: "state", label: "Valdoria", x: "22%", y: "61%", color: "#7b1f25", tip: "Menschliches Kaiserreich im Westen und Süden Caldrias." },
+      { id: "valdoria", kind: "city", label: "Varethis", x: "37%", y: "48%", color: "#a83238", tip: "Kaiserliche Hauptstadt nördlich der südöstlichen Bucht Caldrias." },
+      { id: "sorevia", kind: "city", label: "Sorevia", x: "21%", y: "25%", color: "#9a6a2f", tip: "Nordcaldrische Handelsrepublik unter Hochkonsul Marcen Morov." },
+      { id: "valdoria", kind: "region", label: "Nordstaaten", x: "29%", y: "28%", color: "#9a6a2f", tip: "Kleine Menschenstaaten und abtrünnige nördliche Fürstentümer." },
+      { id: "geografie", kind: "water", label: "Westsee", x: "25%", y: "35%", color: "#496f86", tip: "Großer Binnensee im Norden Caldrias." },
+      { id: "geografie", kind: "water", label: "Südwestsee", x: "13%", y: "57%", color: "#496f86", tip: "Küstennahe Seeregion im Südwesten Caldrias." },
+      { id: "geografie", kind: "water", label: "Südbucht", x: "37%", y: "63%", color: "#496f86", tip: "Große südöstliche Bucht Caldrias und wichtiger Zugang zum Zentralmeer." },
+      { id: "geografie", kind: "route", label: "Zentralmeer", x: "48%", y: "51%", color: "#496f86", tip: "Suvelias wichtigstes Binnenmeer; Zentrum von Handel, Flotten und Diplomatie." },
+      { id: "morovia", kind: "route", label: "Morovische Meerenge", x: "59%", y: "49%", color: "#3e7895", tip: "Engstelle bei Morovia; kontrolliert einen entscheidenden Seeweg." },
+      { id: "morovia", kind: "city", label: "Morovia / Morava", x: "58.7%", y: "49.1%", color: "#496f86", tip: "Inselkönigreich, Freihafen, Bankenplatz und Stadtstaat Morava." },
+      { id: "morovia", kind: "route", label: "Haupthandelsroute", x: "56%", y: "55%", color: "#7b5a28", tip: "Seeweg zwischen Caldria, Morovia, Elyndra, Dhuram-Khaz und südlichen Routen." },
+      { id: "geografie", kind: "region", label: "Östliche Landmasse", x: "76%", y: "43%", color: "#b67c2d", tip: "Große östliche Landmasse mit Elfen, Zwergen, Orks, Feen und mehreren Grenzräumen." },
+      { id: "elyndra", kind: "state", label: "Elyndra", x: "63%", y: "30%", color: "#3f5f42", tip: "Elfenreich im Nordwesten der östlichen Landmasse." },
+      { id: "elyndra", kind: "water", label: "Elyndrischer See", x: "60%", y: "29%", color: "#496f86", tip: "Großer See im elyndrischen Norden." },
+      { id: "dhuram-khaz", kind: "state", label: "Dhuram-Khaz", x: "67%", y: "49%", color: "#5a5a5a", tip: "Zwergenmacht im zentralen Gebirge der östlichen Landmasse." },
+      { id: "dhuram-khaz", kind: "landmark", label: "Zentrales Gebirge", x: "70%", y: "45%", color: "#5a5a5a", tip: "Gebirgskern von Dhuram-Khaz mit Pässen, Minen und Felsstädten." },
+      { id: "geografie", kind: "water", label: "Bergseen", x: "68%", y: "41%", color: "#496f86", tip: "Seen und Flusssysteme rund um die zentralen Berge." },
+      { id: "gorash", kind: "state", label: "Gorash", x: "67%", y: "69%", color: "#8d5d24", tip: "Orkischer Stammesbund in südlichen Wüsten, Halbwüsten und Oasenstädten." },
+      { id: "gorash", kind: "region", label: "Südwüsten", x: "74%", y: "66%", color: "#8d5d24", tip: "Trockene Ebenen und Wüstenräume der orkischen Expansion." },
+      { id: "voelker", kind: "region", label: "Feenlande", x: "86%", y: "27%", color: "#6b8c6f", tip: "Dichter nordöstlicher Dschungel; wichtigste Region der Feen." },
+      { id: "voelker", kind: "landmark", label: "Nordostdschungel", x: "88%", y: "38%", color: "#4f7b45", tip: "Sehr dichter, dünn besiedelter Dschungel im äußersten Nordosten." },
+      { id: "geografie", kind: "water", label: "Ostsee", x: "81%", y: "35%", color: "#496f86", tip: "Große langgezogene Seeregion der östlichen Landmasse." },
+      { id: "geografie", kind: "water", label: "Nordostsee", x: "80%", y: "29%", color: "#496f86", tip: "Nördlicher See nahe den Feenlanden." },
+      { id: "geografie", kind: "water", label: "Südostküste", x: "84%", y: "58%", color: "#496f86", tip: "Fluss- und Küstenräume der südöstlichen Landmasse." },
+      { id: "geografie", kind: "region", label: "Südinseln", x: "62%", y: "74%", color: "#b67c2d", tip: "Südliche Inseln und Halbinseln am Rand des Zentralmeers." }
     ];
 
     const articleById = new Map(articles.map(article => [article.id, article]));
@@ -1391,7 +1445,7 @@
 
     function renderMap() {
       const markers = markerData.map(marker => `
-        <a class="map-marker" href="${linkTo(marker.id)}" style="--x:${marker.x};--y:${marker.y};--c:${marker.color}" aria-label="${marker.label}: ${marker.tip}">
+        <a class="map-marker map-${marker.kind || "state"} ${marker.minor ? "map-minor" : ""}" href="${linkTo(marker.id)}" style="--x:${marker.x};--y:${marker.y};--c:${marker.color}" aria-label="${marker.label}: ${marker.tip}">
           <span class="label-text">${marker.label}</span>
           <span class="tooltip">${marker.tip}</span>
         </a>
@@ -1402,7 +1456,7 @@
             <img src="suvelia-map.png" alt="Karte der bekannten Welt Suvelia">
             ${markers}
           </div>
-          <figcaption class="map-note">Die Marker zeigen politische und kulturelle Schwerpunktregionen, keine exakt vermessenen Grenzen.</figcaption>
+          <figcaption class="map-note">Die Atlasmarker benennen erkennbare Großräume, Seen, Buchten, Routen, Städte und Machtzentren. Sie dienen der Orientierung und zeigen keine exakt vermessenen Grenzen.</figcaption>
         </figure>
       `;
     }
