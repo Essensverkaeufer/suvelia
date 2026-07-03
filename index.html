@@ -705,6 +705,49 @@
       margin-bottom: 4px;
     }
 
+    .portrait-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .portrait-card {
+      border: 1px solid rgba(83, 55, 31, 0.25);
+      border-radius: var(--radius);
+      background: rgba(255, 249, 231, 0.58);
+      overflow: hidden;
+      box-shadow: 0 12px 22px rgba(67, 40, 17, 0.14);
+      transform: translateY(0);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .portrait-card:hover {
+      border-color: rgba(114, 24, 32, 0.38);
+      box-shadow: 0 18px 28px rgba(67, 40, 17, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .portrait-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #2c1c10;
+    }
+
+    .portrait-card figcaption {
+      padding: 10px 12px 12px;
+      font: 0.86rem/1.4 var(--ui);
+      color: var(--ink-soft);
+    }
+
+    .portrait-card strong {
+      display: block;
+      color: var(--wine-dark);
+      margin-bottom: 4px;
+    }
+
     .table-wrap {
       overflow-x: auto;
       margin: 18px 0;
@@ -1072,7 +1115,7 @@
           },
           {
             heading: "Der aktuelle Kaiser",
-            html: "<p>Kaiser Edric IV. Varell ist 49 Jahre alt, politisch mittelmäßig, kriegsgezeichnet und weder besonders beliebt noch verhasst. Er war nie die erste Wahl: Sein älterer Bruder Corvin galt als natürlicher Nachfolger, starb aber offiziell vor Jahrzehnten. Edric erbte damit eine Rolle, für die er nie als idealer Kandidat galt.</p><p>Seine beiden Zwillingssöhne Noael und Aennis kämpfen bereits um Einfluss, Adelsunterstützung, kirchliche Anerkennung, militärische Verbündete und die zukünftige Thronfolge. Edric bevorzugt offiziell keinen Sohn, offenbar absichtlich, um beide kontrollierbar zu halten.</p>"
+            html: "<p>Kaiser Edric IV. Varell ist 49 Jahre alt, politisch mittelmäßig, kriegsgezeichnet und weder besonders beliebt noch verhasst. Er war nie die erste Wahl: Sein älterer Bruder Corvin galt als natürlicher Nachfolger, starb aber offiziell vor Jahrzehnten. Edric erbte damit eine Rolle, für die er nie als idealer Kandidat galt.</p><p>Seine beiden Zwillingssöhne Noael und Aennis kämpfen bereits um Einfluss, Adelsunterstützung, kirchliche Anerkennung, militärische Verbündete und die zukünftige Thronfolge. Edric bevorzugt offiziell keinen Sohn, offenbar absichtlich, um beide kontrollierbar zu halten.</p><div class='portrait-grid'><figure class='portrait-card'><img src='assets/edric-iv-varell.png' alt='Porträt Kaiser Edric IV. Varell'><figcaption><strong>Kaiser Edric IV. Varell</strong>Aktueller Kaiser Valdorias; kriegsgezeichnet, vorsichtig und politisch umkämpft.</figcaption></figure></div>"
           },
           {
             heading: "Machtbasis",
@@ -1122,7 +1165,7 @@
           },
           {
             heading: "Noael und Aennis",
-            html: "<p>Edric heiratete Lady Eliane Sarven aus niedrigem Adel. Sie starb bei der Geburt der Zwillinge Noael und Aennis. Die Geburtsreihenfolge wurde nie zuverlässig dokumentiert oder später absichtlich unklar gemacht. Dadurch besitzt keiner der beiden einen eindeutigen Primogeniturvorteil.</p><p>Noael ist charismatisch, beliebt, militärisch orientiert und impulsiv. Er zieht Soldaten, Veteranen, jüngere Adlige und Öffentlichkeit an. Seine Freundschaft mit König Dawson Morov ist öffentlich bekannt: gemeinsame Studienjahre, Feiern, Sport und politische Gespräche an der Hohen Schule von Asteron gehören bereits zur Hofanekdote.</p><p>Aennis ist ruhig, intelligent, strategisch und politisch kalt. Er besitzt weniger Volksnähe, versteht aber Verwaltung, Diplomatie und Intrige besser. Gegenüber Dawson bleibt er neutral, fürchtet aber dessen Einfluss auf Noael und damit mögliche morovische Einmischung in die Thronfolge.</p>"
+            html: "<p>Edric heiratete Lady Eliane Sarven aus niedrigem Adel. Sie starb bei der Geburt der Zwillinge Noael und Aennis. Die Geburtsreihenfolge wurde nie zuverlässig dokumentiert oder später absichtlich unklar gemacht. Dadurch besitzt keiner der beiden einen eindeutigen Primogeniturvorteil.</p><p>Noael ist charismatisch, beliebt, militärisch orientiert und impulsiv. Er zieht Soldaten, Veteranen, jüngere Adlige und Öffentlichkeit an. Seine Freundschaft mit König Dawson Morov ist öffentlich bekannt: gemeinsame Studienjahre, Feiern, Sport und politische Gespräche an der Hohen Schule von Asteron gehören bereits zur Hofanekdote.</p><p>Aennis ist ruhig, intelligent, strategisch und politisch kalt. Er besitzt weniger Volksnähe, versteht aber Verwaltung, Diplomatie und Intrige besser. Gegenüber Dawson bleibt er neutral, fürchtet aber dessen Einfluss auf Noael und damit mögliche morovische Einmischung in die Thronfolge.</p><div class='portrait-grid'><figure class='portrait-card'><img src='assets/noael-varell.png' alt='Porträt Prinz Noael Varell'><figcaption><strong>Prinz Noael Varell</strong>Charismatischer, militärisch orientierter Thronanwärter und Freund Dawson Morovs.</figcaption></figure><figure class='portrait-card'><img src='assets/aennis-varell.png' alt='Porträt Prinz Aennis Varell'><figcaption><strong>Prinz Aennis Varell</strong>Ruhiger, strategischer Thronanwärter mit stärkerem Sinn für Verwaltung und Intrige.</figcaption></figure></div>"
           },
           {
             heading: "Hoflager",
@@ -1514,7 +1557,7 @@
           { heading: "Territory and capital", html: "<p>Valdoria controls about sixty percent of Caldria. It possesses important coasts, fertile land and access to the Central Sea. The capital Varethis lies north of the great southeastern bay of Caldria and connects the imperial heartland to trade routes toward Morovia and Elyndra.</p><p>With more than 100,000 inhabitants, Varethis is enormous for the era: political center, imperial seat, military hub, religiously important city and vast market. Unlike clean maritime Morava, Varethis is older, more chaotic, socially harsher and full of noble residences, poor districts and veterans.</p>" },
           { heading: "Political system", html: "<p>The empire is a hereditary monarchy with an imperial-feudal mixed system. The emperor is strong, but not absolute. Crown lands, duchies, counties, principalities, semi-autonomous border regions and privileged cities form a realm that is tightly administered in its core and looser at its edges.</p>" },
           { heading: "House Varell", html: "<p>Valdoria has been ruled by House Varell for roughly 800 years. The dynasty founded the realm after Aldren I Varell, later called Aldren the Unifier, subdued Caldria in a long war of unification. The dynasty’s official justification remains that the Varells protect the humans of Caldria.</p><p>The dynasty is ancient, but not peaceful. Its history includes brother wars, fratricide, succession crises and a strict male inheritance principle. See also <a href='#/kaiserhaus-varell'>Imperial House Varell</a>.</p>" },
-          { heading: "The current emperor", html: "<p>Emperor Edric IV Varell is 49, politically mediocre, marked by war and neither especially loved nor hated. He was never the first choice: his older brother Corvin was considered the natural heir, but officially died decades ago. Edric inherited a role for which he was never seen as ideal.</p><p>His twin sons Noael and Aennis are already competing for influence, noble support, religious recognition, military allies and the future succession. Edric officially favors neither son, apparently on purpose, to keep both controllable.</p>" },
+          { heading: "The current emperor", html: "<p>Emperor Edric IV Varell is 49, politically mediocre, marked by war and neither especially loved nor hated. He was never the first choice: his older brother Corvin was considered the natural heir, but officially died decades ago. Edric inherited a role for which he was never seen as ideal.</p><p>His twin sons Noael and Aennis are already competing for influence, noble support, religious recognition, military allies and the future succession. Edric officially favors neither son, apparently on purpose, to keep both controllable.</p><div class='portrait-grid'><figure class='portrait-card'><img src='assets/edric-iv-varell.png' alt='Portrait of Emperor Edric IV Varell'><figcaption><strong>Emperor Edric IV Varell</strong>Current emperor of Valdoria; war-worn, cautious and politically contested.</figcaption></figure></div>" },
           { heading: "Power base", html: "<p>Valdoria is the world’s leading power because several strengths combine: largest population, huge agriculture, heavy cavalry, good administration, a major fleet, important trade routes, strong castles, siege expertise and a vast tax base.</p><p>On paper, Valdoria remains Suvelia’s strongest power. In practice it is constrained by war damage, regional noble power, breakaway northern states and significant war debts to Morovian banks. Those debts do not control Valdoria, but repayment schedules, interest and new crises matter politically.</p>" },
           { heading: "Dependent human states", html: "<p>Outside direct imperial rule, about fifteen smaller human states exist on Caldria. Many pay tribute and receive Valdorian protection. They remain internally independent, sometimes fight one another and test the limits of imperial power after the civil war.</p>" }
         ]
@@ -1540,7 +1583,7 @@
           { heading: "Brother wars and exceptions", html: "<p>The greatest danger to House Varell was often not a foreign realm, but another Varell with his own army. Unclear succession, rival sons, powerful mothers, regional noble camps and religious factions repeatedly produced brother wars.</p><p>The most famous scandal is the fratricide of Emperor Marrec III, who had his popular brother Prince Othar secretly killed. To this day, Remember Othar warns against dangerously powerful rival princes.</p><p>Women are normally excluded from the imperial throne. The only exception was Seraphine I Varell around 200 years ago: she did not inherit, but was elected in a supreme wartime emergency and later treated as an exception, not a precedent.</p>" },
           { heading: "The Morov Affair", html: "<p>About 300 years ago, Emperor Hadrian II Varell had House Morov dispossessed and exiled. Officially, the matter concerned disloyalty, forced loans, hidden wealth and dangerous contacts. In truth, the conflict was personal: Hadrian hated Cassian Morov, the self-confident patriarch of the merchant dynasty.</p><p>The Morovs probably knew a real secret of House Varell. The accusations served as a pretext, and at least part of the evidence escaped with the Morovs to Morovia. The imperial house still keeps silent about the affair.</p>" },
           { heading: "Younger line", html: "<p>Edric’s father, Emperor Garran III Varell, ruled during the Eighty Years’ War. He was brutal, competent, authoritarian and militarily serious: taxes, recruitment, harsh punishments, confiscations and expropriations kept the realm at war, but made him hated.</p><p>Edric IV grew up under this dominant father. His older brother Crown Prince Corvin Varell was seen as more capable and charismatic, but officially died. Edric became heir although he was never the first choice. His mother Helena Varell still lives and remains one of the court’s most experienced power figures.</p>" },
-          { heading: "Noael and Aennis", html: "<p>Edric married Lady Eliane Sarven of minor nobility. She died giving birth to the twins Noael and Aennis. Their birth order was never reliably documented, or was later made unclear on purpose. Neither has a clear primogeniture advantage.</p><p>Noael is charismatic, popular, military-minded and impulsive. He attracts soldiers, veterans, younger nobles and the public. His friendship with King Dawson Morov is public: shared study years, celebrations, sport and political conversations at the High School of Asteron are already court anecdotes.</p><p>Aennis is calm, intelligent, strategic and politically cold. He is less personally popular, but understands administration, diplomacy and intrigue better. He is neutral toward Dawson, but fears Dawson’s influence over Noael and possible Morovian interference in the succession.</p>" },
+          { heading: "Noael and Aennis", html: "<p>Edric married Lady Eliane Sarven of minor nobility. She died giving birth to the twins Noael and Aennis. Their birth order was never reliably documented, or was later made unclear on purpose. Neither has a clear primogeniture advantage.</p><p>Noael is charismatic, popular, military-minded and impulsive. He attracts soldiers, veterans, younger nobles and the public. His friendship with King Dawson Morov is public: shared study years, celebrations, sport and political conversations at the High School of Asteron are already court anecdotes.</p><p>Aennis is calm, intelligent, strategic and politically cold. He is less personally popular, but understands administration, diplomacy and intrigue better. He is neutral toward Dawson, but fears Dawson’s influence over Noael and possible Morovian interference in the succession.</p><div class='portrait-grid'><figure class='portrait-card'><img src='assets/noael-varell.png' alt='Portrait of Prince Noael Varell'><figcaption><strong>Prince Noael Varell</strong>Charismatic, military-minded claimant and friend of Dawson Morov.</figcaption></figure><figure class='portrait-card'><img src='assets/aennis-varell.png' alt='Portrait of Prince Aennis Varell'><figcaption><strong>Prince Aennis Varell</strong>Calm, strategic claimant with a stronger sense for administration and intrigue.</figcaption></figure></div>" },
           { heading: "Court factions", html: "<p>Valdoria has no single all-powerful chancellor. Power is spread across court, nobility, military, administration and regional interests. Three major blocs are forming: the Noael faction, the Aennis faction and emperor-loyal neutralists who reject any early succession decision.</p><p>Noael is stronger among younger nobles, parts of the military, popular figures and possibly Morovia-linked merchants. Aennis attracts administrators, strategic nobles, conservative power politicians and old court networks. Smaller dynastic and regional factions could become decisive in a crisis.</p><p>Both princes have their own residences, court households, advisers and armed retinues. Openly gathering support is legal; the whole empire watches two possible emperors build power bases.</p>" },
           { heading: "Hidden bombs", html: "<p>The dynasty carries several dangerous secrets. An illegitimate child of Edric may exist and could become a succession factor in a crisis. A supposedly dead Varell may still live, most likely Crown Prince Corvin. Edric also apparently had a close relative secretly murdered during the civil war.</p><p>These secrets may be connected: Morovia may hold evidence about old Varell legitimacy, a vanished Varell may live under foreign protection, and Edric’s murder order may have targeted someone who knew too much.</p><p>The most likely trigger of a new disaster would be the sudden death of Edric IV. With no clear birth order, no named heir, two ready-made court factions and 800 years of brother wars, Valdoria could split within days.</p>" }
         ]
