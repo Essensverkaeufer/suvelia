@@ -159,6 +159,42 @@
       letter-spacing: 0.08em;
     }
 
+    .masthead-controls {
+      display: grid;
+      gap: 10px;
+      justify-items: end;
+    }
+
+    .language-toggle {
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid rgba(236, 205, 145, 0.42);
+      background: rgba(36, 20, 11, 0.54);
+      border-radius: 999px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .language-toggle button {
+      min-width: 46px;
+      border: 0;
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: #f8edcc;
+      background: transparent;
+      cursor: pointer;
+      font: 700 0.76rem var(--ui);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .language-toggle button[aria-pressed="true"] {
+      color: #3a2014;
+      background: #f5d88c;
+      box-shadow: inset 0 0 0 1px rgba(80, 45, 20, 0.22);
+    }
+
     .layout {
       display: grid;
       grid-template-columns: 292px minmax(0, 1fr) 306px;
@@ -805,6 +841,14 @@
         justify-self: stretch;
       }
 
+      .masthead-controls {
+        justify-items: stretch;
+      }
+
+      .language-toggle {
+        justify-self: start;
+      }
+
       .layout {
         grid-template-columns: 1fr;
       }
@@ -879,33 +923,39 @@
         <h1>Suvelia-Wiki</h1>
         <p>Ein kanonisches Nachschlagewerk zur bekannten Welt Suvelia: Staaten, Völker, Kriege, Herrscher und Seewege in der Form einer mittelalterlichen Enzyklopädie.</p>
       </div>
-      <aside class="masthead-meta" aria-label="Wiki-Metadaten">
-        Bekannte Welt: Europa-Größe<br>
-        Stand der Technik: 11. Jahrhundert<br>
-        Magie: keine klassische Magie<br>
-        Hauptkonflikt: fragile Nachkriegsordnung
+      <aside class="masthead-controls" aria-label="Wiki-Einstellungen">
+        <div class="language-toggle" aria-label="Sprache auswählen">
+          <button type="button" data-lang="de" aria-pressed="true">DE</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <div class="masthead-meta" aria-label="Wiki-Metadaten" id="mastheadMeta">
+          Bekannte Welt: Europa-Größe<br>
+          Stand der Technik: 11. Jahrhundert<br>
+          Magie: keine klassische Magie<br>
+          Hauptkonflikt: fragile Nachkriegsordnung
+        </div>
       </aside>
     </header>
 
     <div class="layout">
       <nav class="panel" aria-label="Artikelregister">
-        <h2 class="panel-title">Register <span>Codex</span></h2>
+        <h2 class="panel-title"><span id="registerTitle">Register</span> <span>Codex</span></h2>
         <div class="search-wrap">
-          <label class="sr-only" for="searchInput">Wiki durchsuchen</label>
+          <label class="sr-only" for="searchInput" id="searchLabel">Wiki durchsuchen</label>
           <input id="searchInput" type="search" placeholder="Artikel suchen..." autocomplete="off">
-          <span aria-hidden="true">⌕</span>
+          <span aria-hidden="true">&#8981;</span>
         </div>
         <ul class="nav-list" id="navList"></ul>
         <ul class="suggestions" id="suggestions" aria-label="Suchergebnisse"></ul>
         <div class="legend">
-          <strong>Kartenfarben</strong>
-          <div class="legend-item"><span class="swatch" style="background:#7b1f25"></span> Menschliche Reiche</div>
-          <div class="legend-item"><span class="swatch" style="background:#3f5f42"></span> Elfenreich</div>
-          <div class="legend-item"><span class="swatch" style="background:#8d5d24"></span> Orkische Gebiete</div>
-          <div class="legend-item"><span class="swatch" style="background:#5a5a5a"></span> Zwergenmacht</div>
-          <div class="legend-item"><span class="swatch" style="background:#496f86"></span> Neutraler Seehandel</div>
-          <div class="legend-item"><span class="swatch" style="background:#3e7895"></span> Gewässer und Engstellen</div>
-          <div class="legend-item"><span class="swatch" style="background:#7b5a28"></span> Handelsrouten</div>
+          <strong id="legendTitle">Kartenfarben</strong>
+          <div class="legend-item"><span class="swatch" style="background:#7b1f25"></span> <span data-ui="legendHumans">Menschliche Reiche</span></div>
+          <div class="legend-item"><span class="swatch" style="background:#3f5f42"></span> <span data-ui="legendElves">Elfenreich</span></div>
+          <div class="legend-item"><span class="swatch" style="background:#8d5d24"></span> <span data-ui="legendOrcs">Orkische Gebiete</span></div>
+          <div class="legend-item"><span class="swatch" style="background:#5a5a5a"></span> <span data-ui="legendDwarves">Zwergenmacht</span></div>
+          <div class="legend-item"><span class="swatch" style="background:#496f86"></span> <span data-ui="legendTrade">Neutraler Seehandel</span></div>
+          <div class="legend-item"><span class="swatch" style="background:#3e7895"></span> <span data-ui="legendWater">Gewässer und Engstellen</span></div>
+          <div class="legend-item"><span class="swatch" style="background:#7b5a28"></span> <span data-ui="legendRoutes">Handelsrouten</span></div>
         </div>
       </nav>
 
@@ -916,7 +966,7 @@
       <aside class="right-rail" aria-label="Artikelinformationen">
         <section class="infobox" id="infobox"></section>
         <section class="toc-block">
-          <h2 class="panel-title">Inhalt <span>Kapitel</span></h2>
+          <h2 class="panel-title"><span id="tocTitle">Inhalt</span> <span id="tocSubTitle">Kapitel</span></h2>
           <ul class="toc-list" id="tocList"></ul>
         </section>
       </aside>
@@ -1402,7 +1452,361 @@
       { id: "geografie", kind: "region", label: "Südinseln", x: "62%", y: "74%", color: "#b67c2d", tip: "Südliche Inseln und Halbinseln am Rand des Zentralmeers." }
     ];
 
-    const articleById = new Map(articles.map(article => [article.id, article]));
+    const articlesEn = [
+      {
+        id: "suvelia",
+        title: "Suvelia",
+        type: "Main article",
+        subtitle: "Suvelia is the entire known world: a realistic high-medieval fantasy setting without classical magic, but with deep political scars.",
+        tags: ["World", "11th century", "postwar order"],
+        infobox: {
+          "Category": "Known world",
+          "Size": "roughly Europe-sized",
+          "Technology": "High Middle Ages, ca. 11th century",
+          "Magic": "only weak fae powers",
+          "Great powers": "Valdoria, Elyndra, Gorash, Dhuram-Khaz",
+          "Current situation": "fragile peace"
+        },
+        sections: [
+          { heading: "Overview", html: "<p>Suvelia is the entire known world shown on the map. It is roughly the size of Europe and sits at an 11th-century technological level: feudal states, castles, heavy cavalry, sailing ships, crossbows and simple siege engines shape politics and war.</p><p>The world works in a mostly realistic way. There are no classical mages, no fireballs, no teleportation and no magical arms industry. Only the fae possess rare, weak supernatural abilities, and these do not reshape military power.</p>" },
+          { heading: "Political order", html: "<p>Humans are the dominant global people. Their greatest power is the Empire of Valdoria on the western great island of Caldria. On the eastern landmass lie the elven realm of Elyndra, the tribal confederation of Gorash and the dwarven realm of Dhuram-Khaz. Between them, Morovia controls one of the world’s most important sea lanes as a neutral free port.</p>" },
+          { heading: "Map of the known world", html: "MAP" },
+          { heading: "Important articles", html: "CARDS" }
+        ]
+      },
+      {
+        id: "geografie",
+        title: "Geography of Suvelia",
+        type: "Geography",
+        subtitle: "The known world consists of a western human island, a larger eastern landmass and a strategically decisive central sea.",
+        tags: ["Caldria", "Central Sea", "jungle region"],
+        infobox: {
+          "West": "Caldria",
+          "East": "eastern great landmass",
+          "Sea": "Central Sea",
+          "Hostile zone": "northeastern jungle",
+          "Key point": "Morovian Strait"
+        },
+        sections: [
+          { heading: "Caldria", html: "<p>Caldria is the great western island and is almost entirely human-dominated. About sixty percent belongs to the Empire of Valdoria, especially the west, the south and important agricultural heartlands. The rest consists of roughly fifteen smaller city-states, principalities and kingdoms.</p>" },
+          { heading: "Eastern great landmass", html: "<p>The eastern landmass contains several major power centers. Elyndra, the great elven realm, lies in the northwest. In the center rise the mountains of Dhuram-Khaz, where the dwarves built their economic power in valleys, cliff-cities and rock settlements. In the south lie the dry plains, deserts and oasis towns of the Gorash tribal confederation.</p>" },
+          { heading: "Central Sea", html: "<p>The Central Sea has a geopolitical role similar to a medieval Mediterranean. Whoever controls its ports, chokepoints and trade routes influences diplomacy, grain trade, fleet movement and war financing. Morovia owes its special position to this sea.</p>" },
+          { heading: "Northeastern jungle", html: "<p>The far northeast of the eastern landmass is covered by extremely dense jungle. It is sparsely populated, hard to cross and closely associated with the fae. For many realms, it is more myth than governable territory.</p>" }
+        ]
+      },
+      {
+        id: "valdoria",
+        title: "Empire of Valdoria",
+        type: "State article",
+        subtitle: "Valdoria is the strongest human power in Suvelia, but wounded by civil war, succession rivalry and breakaway northern states.",
+        tags: ["Humans", "Empire", "Caldria", "House Varell"],
+        infobox: {
+          "Government": "imperial-feudal hereditary monarchy",
+          "Species": "Humans",
+          "Location": "western and southern Caldria",
+          "Capital": "Varethis, over 100,000 inhabitants",
+          "Ruler": "Emperor Edric IV Varell, age 49",
+          "Dynasty": "House Varell, ca. 800 years",
+          "Power base": "population, agriculture, cavalry, fleet",
+          "Status": "weakened superpower"
+        },
+        sections: [
+          { heading: "Territory and capital", html: "<p>Valdoria controls about sixty percent of Caldria. It possesses important coasts, fertile land and access to the Central Sea. The capital Varethis lies north of the great southeastern bay of Caldria and connects the imperial heartland to trade routes toward Morovia and Elyndra.</p><p>With more than 100,000 inhabitants, Varethis is enormous for the era: political center, imperial seat, military hub, religiously important city and vast market. Unlike clean maritime Morava, Varethis is older, more chaotic, socially harsher and full of noble residences, poor districts and veterans.</p>" },
+          { heading: "Political system", html: "<p>The empire is a hereditary monarchy with an imperial-feudal mixed system. The emperor is strong, but not absolute. Crown lands, duchies, counties, principalities, semi-autonomous border regions and privileged cities form a realm that is tightly administered in its core and looser at its edges.</p>" },
+          { heading: "House Varell", html: "<p>Valdoria has been ruled by House Varell for roughly 800 years. The dynasty founded the realm after Aldren I Varell, later called Aldren the Unifier, subdued Caldria in a long war of unification. The dynasty’s official justification remains that the Varells protect the humans of Caldria.</p><p>The dynasty is ancient, but not peaceful. Its history includes brother wars, fratricide, succession crises and a strict male inheritance principle. See also <a href='#/kaiserhaus-varell'>Imperial House Varell</a>.</p>" },
+          { heading: "The current emperor", html: "<p>Emperor Edric IV Varell is 49, politically mediocre, marked by war and neither especially loved nor hated. He was never the first choice: his older brother Corvin was considered the natural heir, but officially died decades ago. Edric inherited a role for which he was never seen as ideal.</p><p>His twin sons Noael and Aennis are already competing for influence, noble support, religious recognition, military allies and the future succession. Edric officially favors neither son, apparently on purpose, to keep both controllable.</p>" },
+          { heading: "Power base", html: "<p>Valdoria is the world’s leading power because several strengths combine: largest population, huge agriculture, heavy cavalry, good administration, a major fleet, important trade routes, strong castles, siege expertise and a vast tax base.</p><p>On paper, Valdoria remains Suvelia’s strongest power. In practice it is constrained by war damage, regional noble power, breakaway northern states and significant war debts to Morovian banks. Those debts do not control Valdoria, but repayment schedules, interest and new crises matter politically.</p>" },
+          { heading: "Dependent human states", html: "<p>Outside direct imperial rule, about fifteen smaller human states exist on Caldria. Many pay tribute and receive Valdorian protection. They remain internally independent, sometimes fight one another and test the limits of imperial power after the civil war.</p>" }
+        ]
+      },
+      {
+        id: "kaiserhaus-varell",
+        title: "Imperial House Varell",
+        type: "Dynasty article",
+        subtitle: "House Varell founded Valdoria roughly 800 years ago and remains the most dangerous family complex in Suvelian politics.",
+        tags: ["House Varell", "Edric IV", "Noael", "Aennis", "dynasty"],
+        infobox: {
+          "Dynasty": "House Varell",
+          "Age": "ca. 800 years",
+          "Founder": "Aldren I Varell, the Unifier",
+          "Current emperor": "Edric IV Varell",
+          "Imperial princes": "Noael Varell and Aennis Varell",
+          "Succession": "officially unclear",
+          "Principle": "male inheritance"
+        },
+        sections: [
+          { heading: "Origin", html: "<p>About 800 years ago, Caldria was not a united human island but a web of kingdoms, principalities, city-states, tribal lands and noble alliances. House Varell was only the dynasty of one kingdom.</p><p>Aldren I Varell first won an internal power struggle, then divided his enemies, rewarded some with protection, titles and marriages, and destroyed others. After decades of war, he took the title Emperor of Valdoria.</p>" },
+          { heading: "Legitimacy", html: "<p>The Varells justify their rule less through divine origin than through protection: the emperor is defender of Caldria’s humans, guarantor against foreign invasion and patron of smaller human states. This narrative still justifies tribute and Valdorian supremacy.</p><p>The most venerated emperor is not Aldren, but Caelor II Varell, called Caelor the Great. Army reforms, roads, finances, victories, ports and law codes are attributed to him. The image is probably idealized, but politically powerful.</p>" },
+          { heading: "Brother wars and exceptions", html: "<p>The greatest danger to House Varell was often not a foreign realm, but another Varell with his own army. Unclear succession, rival sons, powerful mothers, regional noble camps and religious factions repeatedly produced brother wars.</p><p>The most famous scandal is the fratricide of Emperor Marrec III, who had his popular brother Prince Othar secretly killed. To this day, Remember Othar warns against dangerously powerful rival princes.</p><p>Women are normally excluded from the imperial throne. The only exception was Seraphine I Varell around 200 years ago: she did not inherit, but was elected in a supreme wartime emergency and later treated as an exception, not a precedent.</p>" },
+          { heading: "The Morov Affair", html: "<p>About 300 years ago, Emperor Hadrian II Varell had House Morov dispossessed and exiled. Officially, the matter concerned disloyalty, forced loans, hidden wealth and dangerous contacts. In truth, the conflict was personal: Hadrian hated Cassian Morov, the self-confident patriarch of the merchant dynasty.</p><p>The Morovs probably knew a real secret of House Varell. The accusations served as a pretext, and at least part of the evidence escaped with the Morovs to Morovia. The imperial house still keeps silent about the affair.</p>" },
+          { heading: "Younger line", html: "<p>Edric’s father, Emperor Garran III Varell, ruled during the Eighty Years’ War. He was brutal, competent, authoritarian and militarily serious: taxes, recruitment, harsh punishments, confiscations and expropriations kept the realm at war, but made him hated.</p><p>Edric IV grew up under this dominant father. His older brother Crown Prince Corvin Varell was seen as more capable and charismatic, but officially died. Edric became heir although he was never the first choice. His mother Helena Varell still lives and remains one of the court’s most experienced power figures.</p>" },
+          { heading: "Noael and Aennis", html: "<p>Edric married Lady Eliane Sarven of minor nobility. She died giving birth to the twins Noael and Aennis. Their birth order was never reliably documented, or was later made unclear on purpose. Neither has a clear primogeniture advantage.</p><p>Noael is charismatic, popular, military-minded and impulsive. He attracts soldiers, veterans, younger nobles and the public. His friendship with King Dawson Morov is public: shared study years, celebrations, sport and political conversations at the High School of Asteron are already court anecdotes.</p><p>Aennis is calm, intelligent, strategic and politically cold. He is less personally popular, but understands administration, diplomacy and intrigue better. He is neutral toward Dawson, but fears Dawson’s influence over Noael and possible Morovian interference in the succession.</p>" },
+          { heading: "Court factions", html: "<p>Valdoria has no single all-powerful chancellor. Power is spread across court, nobility, military, administration and regional interests. Three major blocs are forming: the Noael faction, the Aennis faction and emperor-loyal neutralists who reject any early succession decision.</p><p>Noael is stronger among younger nobles, parts of the military, popular figures and possibly Morovia-linked merchants. Aennis attracts administrators, strategic nobles, conservative power politicians and old court networks. Smaller dynastic and regional factions could become decisive in a crisis.</p><p>Both princes have their own residences, court households, advisers and armed retinues. Openly gathering support is legal; the whole empire watches two possible emperors build power bases.</p>" },
+          { heading: "Hidden bombs", html: "<p>The dynasty carries several dangerous secrets. An illegitimate child of Edric may exist and could become a succession factor in a crisis. A supposedly dead Varell may still live, most likely Crown Prince Corvin. Edric also apparently had a close relative secretly murdered during the civil war.</p><p>These secrets may be connected: Morovia may hold evidence about old Varell legitimacy, a vanished Varell may live under foreign protection, and Edric’s murder order may have targeted someone who knew too much.</p><p>The most likely trigger of a new disaster would be the sudden death of Edric IV. With no clear birth order, no named heir, two ready-made court factions and 800 years of brother wars, Valdoria could split within days.</p>" }
+        ]
+      },
+      {
+        id: "elyndra",
+        title: "Elyndra",
+        type: "State article",
+        subtitle: "Elyndra is the great elven realm in the northwest of the eastern landmass, ruled by a Princess as the highest sovereign title.",
+        tags: ["Elves", "Princess", "noble council"],
+        infobox: {
+          "Government": "Princess and noble council",
+          "Species": "Elves",
+          "Location": "northwest of the eastern landmass",
+          "Ruler title": "Princess",
+          "Power base": "experience, diplomacy, elite armies",
+          "Relation to Valdoria": "close trade partners, tense"
+        },
+        sections: [
+          { heading: "Rule", html: "<p>In Elyndra, Princess is not a lesser title, but traditionally the highest sovereign rank. The Princess rules with, or against, a powerful noble council whose houses often endure for centuries.</p>" },
+          { heading: "The Princess", html: "<p>The current Princess is considered cold, calculating and extremely competent. She is not needlessly cruel, but she is willing to sacrifice people when she believes strategy requires it. Her strength lies in patience, discipline and long-term thinking.</p>" },
+          { heading: "Elven life and politics", html: "<p>Elves can live roughly 300 to 400 years. This changes politics fundamentally: one elven diplomat may have negotiated with several generations of the same human dynasty. Conflicts can also be carried forward for centuries.</p>" },
+          { heading: "Power base", html: "<p>Elyndra does not rely on a vast mass army. Its strength lies in disciplined elite forces, superior archery traditions, advanced medicine, excellent diplomacy, efficient administration, skilled shipbuilders and long individual experience.</p>" },
+          { heading: "Relations with Valdoria", html: "<p>Historically, Elyndra and Valdoria are close trade partners. At present their relationship is tense. Valdoria suspects Elyndra of exploiting imperial weakness after the civil war, while Elyndra fears a renewed Valdoria.</p>" }
+        ]
+      },
+      {
+        id: "gorash",
+        title: "Tribal Confederation of Gorash",
+        type: "State article",
+        subtitle: "Gorash is the orcish great power in the south of the eastern landmass: a union of clans, oasis towns, nomads and war kings.",
+        tags: ["Orcs", "desert", "war king"],
+        infobox: {
+          "Government": "tribal confederation",
+          "Species": "Orcs",
+          "Location": "southern deserts and semi-deserts",
+          "Rule": "war king in wartime",
+          "Power base": "clans, riders, oasis towns",
+          "Current course": "expansion"
+        },
+        sections: [
+          { heading: "Society", html: "<p>The orcs of Gorash are not a simple horde, but a mixture of nomadic tribes, semi-nomadic clans, oasis towns, fortified trade centers and permanent settlements. Some groups live from herding and caravans, others control wells, markets and desert routes.</p>" },
+          { heading: "War king", html: "<p>Gorash is not permanently unified. In major wars, a war king rises whose power rests on prestige, military success, plunder, land distribution and the ability to hold rival tribes together. A weak war king loses the confederation.</p>" },
+          { heading: "Foreign relations", html: "<p>Gorash feels pure hatred toward humans and nearly pure hatred toward elves. Relations with dwarves are neutral to hostile. Kobolds are traded with, though many orcs despise them. This isolation makes Gorash dangerous, especially as the confederation expands again.</p>" }
+        ]
+      },
+      {
+        id: "dhuram-khaz",
+        title: "Dhuram-Khaz",
+        type: "State article",
+        subtitle: "Dhuram-Khaz is Suvelia’s most important dwarven power, built on mountain cities, guilds, metals and credit.",
+        tags: ["Dwarves", "guilds", "mountains"],
+        infobox: {
+          "Government": "guild oligarchy",
+          "Species": "Dwarves",
+          "Location": "central mountains of the eastern landmass",
+          "Power center": "mountain and rock cities",
+          "Power base": "metals, crafts, passes, loans",
+          "Position": "economic great power"
+        },
+        sections: [
+          { heading: "Settlement form", html: "<p>Dhuram-Khaz is not only underground halls. Dwarven cities lie in valleys, are built into mountainsides or reach deep into rock complexes. Tunnels connect many centers, but the economy depends on surface passes, trade routes and raw material flows.</p>" },
+          { heading: "Guild rule", html: "<p>Real power lies with strong craft guilds: mining, iron, weapon smithing, masons, merchants, tunnel builders and mint masters. This makes Dhuram-Khaz almost a medieval economic oligarchy.</p>" },
+          { heading: "Power base", html: "<p>The dwarves control iron, silver, gold, high-quality weapons, large mines, mountain passes, specialized crafts and parts of international credit. Their products are not magical, but superior through raw materials, experience and organization.</p>" }
+        ]
+      },
+      {
+        id: "morovia",
+        title: "Kingdom of Morovia",
+        type: "State article",
+        subtitle: "Morovia is a tiny, extremely rich island on a decisive sea lane: neutral free port, banking center and secure vault of the powerful.",
+        tags: ["Free port", "banks", "neutrality", "House Morov"],
+        infobox: {
+          "Government": "absolute monarchy with referendums",
+          "Ruler": "King Dawson Morov, age 22",
+          "Time on throne": "a few months",
+          "Capital": "Morava",
+          "Currency": "Mor",
+          "Population": "ca. 20,000-50,000 permanent inhabitants",
+          "Species": "70% humans, 20% kobolds, 5% dwarves, 5% fae",
+          "Location": "island on the central strait",
+          "Dynasty": "House Morov",
+          "Power base": "banks, sea lane, warehouses, loans",
+          "Status": "armed neutral, secular and very rich"
+        },
+        sections: [
+          { heading: "Location", html: "<p>Morovia lies on a small island at an extremely important sea lane in the Central Sea. Its location allows it to control, mediate and secure trade between Caldria, Elyndra, Dhuram-Khaz and southern routes.</p><p>Politically and demographically, the island is almost a single city: Morava. Most permanent inhabitants live in the city, harbor zones, adjacent quarters and small edge farms. The Crown Heights Palace, commonly the Height, stands on the island’s dominant hill and is visible from much of Morava.</p>" },
+          { heading: "House Morov", html: "<p>About 300 years ago, House Morov was driven from the western human world after a severe conflict with the imperial family of the time. The Morovs were not old kings, but a rich merchant dynasty with ships, loans, contacts and information.</p><p>On the then rocky and sparsely populated island, they survived through their trade network. Exiles became the island’s de facto lords, and later kings. To this day, a Morov is expected to manage the kingdom like an asset that must never be lost.</p>" },
+          { heading: "Origin of wealth", html: "<p>The first great wealth came from two almost exhausted resources: Morovian Purple, a deep durable purple dye, and Morovian pearls, whose rare violet pieces became known as Crown Tears. Both became status symbols for emperors, kings, high nobles and wealthy merchants.</p><p>The resources are now nearly depleted. Morovia’s real achievement was turning raw-resource wealth into ports, walls, ships, waterworks, warehouses, trade courts, contacts and banks in time.</p>" },
+          { heading: "Government and referendums", html: "<p>Morovia is formally an absolute monarchy. The king is head of state, head of government, highest judge and commander-in-chief. Even so, the Crown holds frequent free referendums on taxes, port projects, trade treaties, infrastructure, military decisions, law changes and citizenship questions.</p><p>Permanent citizens may vote regardless of species. The Royal Office for Citizen Rolls and Public Votes, usually just the Register, keeps citizen lists, districts, voting rights, public counts and archives. Manipulating a vote is a grave crime against Crown, citizens and island stability.</p><p>Legally, Dawson remains absolute. He could override a result if he believed it necessary; so far he has not. The Morovian principle is: The Crown decides. But first the Crown listens to the island.</p>" },
+          { heading: "King Dawson Morov", html: "<p>Dawson Morov is 22 and has sat on the throne only a few months. His father died of illness; there was no assassination, coup or major succession crisis. The calm transition shows the stability of House Morov.</p><p>Dawson was raised strictly, luxuriously and with high expectations: languages, account books, state revenue, contracts, history, diplomacy, public appearances and military basics all came early. A Morov prince is trained not as a warrior, but as a manager of power, wealth and stability.</p><p>He was strongly shaped by Leont Varos, a roughly 58-year-old banker, financial politician and former adviser to his father. Dawson learned from him that debt is political power and that a contract can sometimes achieve more than an army.</p><p>Dawson is highly intelligent, business-minded, pragmatic and unusually popular, but has authoritarian traits. His public friendship with Prince Noael Varell is geopolitically explosive. Dawson prefers Noael as future emperor, though he has not yet intervened openly in the Valdorian succession.</p>" },
+          { heading: "House Morov today", html: "<p>Dawson’s current preferred heir would be his uncle Tiber Morov: about 43, calm, experienced, conservative, not charismatic, but reliable. Dawson would choose him not out of affection, but because Tiber would probably not destroy the island.</p><p>Other Morovs are politically important. Cassel Morov, Dawson’s cousin, is a major banker and may know more about Valdoria’s finances than almost any Varell. Another cousin, High Consul Marcen Morov, rules the northern Caldrish trade republic of Sorevia. House Morov therefore has influence in Morovia, banking and North Caldria without controlling a classical great empire.</p>" },
+          { heading: "Why Morovia remains independent", html: "<p>Morovia survives not because it is invincible, but because conquest would be too expensive. The island is heavily fortified, has a small professional fleet, benefits from neutrality guarantees and manages the wealth of many rulers. An attack could trigger trade crises, blockades, credit failures and reactions from several powers.</p>" },
+          { heading: "Society and citizenship", html: "<p>Morovia is officially secular, multicultural and economically open. Its permanent population is roughly 70% humans, 20% kobolds, 5% dwarves and 5% fae. Kobolds have unusual influence in retail trade, accounting, warehousing, import, export and information networks.</p><p>The land is not a utopia. Origin matters less than money, contract-keeping and behavior, but prejudice remains. Hostility toward orcs is especially strong, probably due to raids, massacres and captures during the Eighty Years’ War. Citizenship comes by birth, marriage or very expensive purchase.</p>" },
+          { heading: "Banks and trade", html: "<p>Morovian banks are unusually advanced for an 11th-century world: they hold deposits, keep account books, issue bills of exchange, finance rulers, fleets, expeditions and rebuilding. Sea bonds act almost like primitive maritime insurance, and warehouse certificates make goods tradable without constant physical movement.</p><p>After the Crown, the banks are the strongest force on the island. There are about five to eight major banking houses, including Varos & Sons, House Caldrin, the Merovan Exchange Bank, the Cassel-Morov House, the Bank of Teren, the kobold Trading House Vekk and the Seranian Credit Chamber. No single bank controls the king; their combined weight matters.</p><p>The Royal Mint and Exchange Chamber, or simply the Exchange Chamber, functions like an early central bank: it controls coinage, reserves, exchange rates, quality standards, parts of state borrowing and the licensing of certain banking activities. The key currency is the Mor, an internationally accepted coin bearing the face of Cassian I Morov, Morovia’s first ruler.</p>" },
+          { heading: "Culture and defense", html: "<p>Morovian culture uses antique-looking Greek and Roman forms: pale stone, columns, arcades, terraces, statues, public fountains, squares, baths, theater, political satire and contests. The island remains technologically medieval, but culturally distinct from Valdoria. Morovians are practical; one saying is: A good speech fills no warehouse.</p><p>Every five years, Morovia hosts the Great Agons of Morava: running, wrestling, fistfighting, javelin, archery, rowing, horse races and team contests. During the Agons, merchants, diplomats, athletes and bankers arrive from across Suvelia.</p><p>Militarily, Morovia relies on walls, coastal fortresses, harbor chains, a small professional army, mercenaries in crises, a strong fleet and organized citizen militias. The island is not meant to be unbeatable, but too costly for any attacker.</p>" },
+          { heading: "Dark contradictions", html: "<p>Morovia’s openness has limits. Wanted war criminals, fallen nobles or dangerous informants can buy protection with money, usefulness or secrets. Under parts of the city are secret detention sites for spies, traitors and people who officially do not exist.</p><p>This makes Morovia contradictory: open, but anti-orcish; referendum-loving, but absolutist; neutral, but useful to exiles; peaceful, but heavily armed. Dawson Morov embodies the tension between brilliant reform king and efficient autocrat.</p>" }
+        ]
+      },
+      {
+        id: "sorevia",
+        title: "Republic of Sorevia",
+        type: "State article",
+        subtitle: "Sorevia is a northern Caldrish trade republic under High Consul Marcen Morov, linking the Morov dynasty directly to the breakaway human states.",
+        tags: ["North Caldria", "trade republic", "House Morov"],
+        infobox: {
+          "Government": "trade republic",
+          "Ruler": "High Consul Marcen Morov",
+          "Location": "northern Caldria",
+          "Species": "mostly humans",
+          "Power base": "trade, ports, Morov networks",
+          "Status": "independent or breakaway"
+        },
+        sections: [
+          { heading: "Overview", html: "<p>Sorevia is a human trade republic in northern Caldria and one of the states exploiting Valdoria’s weakened postwar order. It is led by High Consul Marcen Morov, a cousin of King Dawson Morov.</p>" },
+          { heading: "Political importance", html: "<p>That a Morov heads Sorevia makes the family a transnational power factor. House Morov rules Morovia, influences international banking and holds an important position in North Caldria.</p><p>For Valdoria this is delicate: the empire recognizes Morovia as sovereign, but must also watch Morov networks operate in a region that only recently slipped from direct imperial influence.</p>" },
+          { heading: "Relationship with Morovia", html: "<p>Sorevia is not a Morovian colony. Marcen Morov rules as High Consul of a trade republic, not as king or governor. Still, family ties, banking relationships and shared commercial interests make exchange with Morovia easier.</p>" }
+        ]
+      },
+      {
+        id: "voelker",
+        title: "Peoples of Suvelia",
+        type: "Ethnography",
+        subtitle: "Suvelia is shaped by humans, elves, orcs, dwarves, kobolds, fae and giants, whose power and status vary widely.",
+        tags: ["Humans", "Elves", "Orcs", "Dwarves", "Kobolds", "Fae", "Giants"],
+        infobox: {
+          "Known peoples": "7",
+          "Dominant species": "Humans",
+          "Long-lived": "Elves",
+          "Supernatural": "Fae",
+          "Rare": "Giants",
+          "Discriminated": "Kobolds"
+        },
+        sections: [
+          { heading: "Overview", html: "<div class='table-wrap'><table><thead><tr><th>People</th><th>Role</th><th>Typical position</th></tr></thead><tbody><tr><td>Humans</td><td>global number one</td><td>dominate Caldria and Valdoria</td></tr><tr><td>Elves</td><td>long-lived great power</td><td>Elyndra, elite armies and diplomacy</td></tr><tr><td>Orcs</td><td>tribal and military power</td><td>Gorash, deserts and oasis towns</td></tr><tr><td>Dwarves</td><td>craft and resources</td><td>Dhuram-Khaz, guilds and mountains</td></tr><tr><td>Kobolds</td><td>merchants and diaspora</td><td>useful, often discriminated</td></tr><tr><td>Fae</td><td>alien humanoids</td><td>rare weak supernatural abilities</td></tr><tr><td>Giants</td><td>small clans</td><td>3 to 4 meters tall, rare, locally dangerous</td></tr></tbody></table></div>" },
+          { heading: "Kobolds", html: "<p>Kobolds are clever traders, economically skilled, multilingual and present in many cities as intermediaries. They are also heavily discriminated against and stereotyped as greedy, dishonest or disloyal. Many of these accusations are racist clichés.</p><p>Because of exclusion, kobolds develop strong family, trade and diaspora networks. Morovia is especially important to many of them.</p>" },
+          { heading: "Fae", html: "<p>Fae are somewhat smaller than humans, humanoid, but visibly alien. They are the only known species with genuine supernatural abilities. These powers are rare, weak and difficult to control, and do not reshape battlefields. Their most important homeland is likely the dense northeastern jungle.</p>" },
+          { heading: "Giants", html: "<p>Giants are intelligent humanoids about 3 to 4 meters tall. They do not form a great empire, but live in individual clans. A giant clan can matter militarily without making giants a world power.</p>" }
+        ]
+      },
+      {
+        id: "religionen",
+        title: "Religions of Suvelia",
+        type: "Culture article",
+        subtitle: "Religions are politically important in Suvelia, but not sources of open magic. Each species has its own traditions; humans have several.",
+        tags: ["Faith", "culture", "legitimacy"],
+        infobox: {
+          "Proof of gods": "uncertain",
+          "Human religion": "several traditions",
+          "Imperial ideology": "religion and crown",
+          "Fae powers": "known",
+          "Magic priests": "not canon"
+        },
+        sections: [
+          { heading: "General role", html: "<p>Religion is socially and politically important in Suvelia, but not as visible magic. Rulers seek legitimacy through priests, temples, chronicles and rituals. Whether gods truly intervene is not proven.</p>" },
+          { heading: "Humans", html: "<p>Humans have several religions. Valdoria is held together above all by a dominant shared religion and loyalty to the imperial crown. Other human states may have different traditions.</p>" },
+          { heading: "Other peoples", html: "<p>Each species has its own religious traditions. Elves think in long dynastic and ritual timeframes. Orc belief is probably more tied to clan, ancestors, war and survival. Dwarven religion is likely anchored in work, stone, oaths and guilds.</p>" },
+          { heading: "Fae and the supernatural", html: "<p>Humans know that fae possess supernatural abilities. Because those powers are weak and rare, they fit poorly into simple dogmas. Some religious groups may read fae as holy, others as dangerous or unclean.</p>" }
+        ]
+      },
+      {
+        id: "geschichte",
+        title: "History of Suvelia",
+        type: "Chronicle",
+        subtitle: "Suvelia’s present is shaped by two enormous shocks: the Eighty Years’ War and the Valdorian Civil War.",
+        tags: ["Eighty Years’ War", "civil war", "present"],
+        infobox: {
+          "Greatest war": "Eighty Years’ War",
+          "End": "16 years ago",
+          "Valdorian Civil War": "ended 4 years ago",
+          "Main result": "status quo with massive losses",
+          "Present": "orcs expand, Valdoria stabilizes"
+        },
+        sections: [
+          { heading: "Timeline", html: "<div class='timeline'><div class='timeline-item'><b>About 800 years ago</b>Aldren I Varell unites large parts of Caldria in the First Valdorian War of Unification and founds the Empire of Valdoria.</div><div class='timeline-item'><b>About 300 years ago</b>Hadrian II Varell has House Morov dispossessed and exiled. The Morovs save their contacts and possibly a dangerous Varell secret by fleeing to Morovia.</div><div class='timeline-item'><b>About 200 years ago</b>Seraphine I Varell is elected in a supreme wartime emergency and remains the only woman to officially lead Valdoria.</div><div class='timeline-item'><b>96 to 16 years ago</b>The Eighty Years’ War draws in almost all major nations of Suvelia.</div><div class='timeline-item'><b>16 years ago</b>The Eighty Years’ War ends largely in the status quo. No one truly wins, but everyone is exhausted.</div><div class='timeline-item'><b>14 to 4 years ago</b>The Valdorian Civil War tears the empire apart. Several northern states break away; Morovia increasingly finances the imperial crown and sometimes hands rebel refugees back to Valdoria.</div><div class='timeline-item'><b>Present</b>Dawson Morov has ruled only a few months, favors Noael Varell, while Valdoria is indebted, Noael and Aennis build factions, Gorash expands and Morovia becomes more important than ever.</div></div>" },
+          { heading: "The Eighty Years’ War", html: "<p>The Eighty Years’ War lasted eight decades and involved nearly all major nations: human realms, Elyndra, Gorash, Dhuram-Khaz, smaller states and probably Morovia indirectly. Millions died, regions were destroyed, treasuries emptied and political orders shaken.</p><p>The crucial point is that the war ended sixteen years ago largely in the status quo. Suvelia suffered enormous losses without any power truly winning.</p>" },
+          { heading: "Valdorian Civil War", html: "<p>Only six years after the great war ended, a ten-year civil war began or escalated in Valdoria. It ended four years ago and left behind a weakened empire, impoverished provinces, stronger nobles, veteran bands and breakaway northern states.</p>" },
+          { heading: "Present", html: "<p>Officially, there is peace. In reality, few believe in lasting stability. Valdoria must restore its power, Elyndra watches nervously, Gorash expands, Dhuram-Khaz profits from rebuilding and Morovia sits at the center of the world economy.</p><p>The most dangerous political core is now the connection between Dawson Morov and Noael Varell. Dawson favors Noael, Valdoria owes Morovian banks a great deal, Aennis fears foreign interference and Edric has named no clear heir. As long as Edric lives, the system holds. If he dies suddenly, one personal friendship could trigger a new great war.</p>" }
+        ]
+      }
+    ];
+
+    const markerDataEn = [
+      { id: "geografie", kind: "region", label: "Caldria", x: "18%", y: "42%", color: "#b67c2d", tip: "Western great island; almost entirely human-dominated." },
+      { id: "valdoria", kind: "state", label: "Valdoria", x: "22%", y: "61%", color: "#7b1f25", tip: "Human empire in western and southern Caldria." },
+      { id: "valdoria", kind: "city", label: "Varethis", x: "37%", y: "48%", color: "#a83238", tip: "Imperial capital north of Caldria’s southeastern bay." },
+      { id: "sorevia", kind: "city", label: "Sorevia", x: "21%", y: "25%", color: "#9a6a2f", tip: "Northern Caldrish trade republic under High Consul Marcen Morov." },
+      { id: "valdoria", kind: "region", label: "Northern states", x: "29%", y: "28%", color: "#9a6a2f", tip: "Small human states and breakaway northern principalities." },
+      { id: "geografie", kind: "water", label: "Western lake", x: "25%", y: "35%", color: "#496f86", tip: "Large inland lake in northern Caldria." },
+      { id: "geografie", kind: "water", label: "Southwest lake", x: "13%", y: "57%", color: "#496f86", tip: "Coastal lake region in southwestern Caldria." },
+      { id: "geografie", kind: "water", label: "Southern bay", x: "37%", y: "63%", color: "#496f86", tip: "Great southeastern bay of Caldria and key access to the Central Sea." },
+      { id: "geografie", kind: "route", label: "Central Sea", x: "48%", y: "51%", color: "#496f86", tip: "Suvelia’s most important inland sea; center of trade, fleets and diplomacy." },
+      { id: "morovia", kind: "route", label: "Morovian Strait", x: "59%", y: "49%", color: "#3e7895", tip: "Chokepoint near Morovia controlling a decisive sea lane." },
+      { id: "morovia", kind: "city", label: "Morovia / Morava", x: "58.7%", y: "49.1%", color: "#496f86", tip: "Island kingdom, free port, banking center and city-state of Morava." },
+      { id: "morovia", kind: "route", label: "Main trade route", x: "56%", y: "55%", color: "#7b5a28", tip: "Sea route between Caldria, Morovia, Elyndra, Dhuram-Khaz and southern routes." },
+      { id: "geografie", kind: "region", label: "Eastern landmass", x: "76%", y: "43%", color: "#b67c2d", tip: "Large eastern landmass with elves, dwarves, orcs, fae and frontier zones." },
+      { id: "elyndra", kind: "state", label: "Elyndra", x: "63%", y: "30%", color: "#3f5f42", tip: "Elven realm in the northwest of the eastern landmass." },
+      { id: "elyndra", kind: "water", label: "Elyndrian lake", x: "60%", y: "29%", color: "#496f86", tip: "Large lake in the elven north." },
+      { id: "dhuram-khaz", kind: "state", label: "Dhuram-Khaz", x: "67%", y: "49%", color: "#5a5a5a", tip: "Dwarven power in the central mountains of the eastern landmass." },
+      { id: "dhuram-khaz", kind: "landmark", label: "Central mountains", x: "70%", y: "45%", color: "#5a5a5a", tip: "Mountain core of Dhuram-Khaz with passes, mines and rock cities." },
+      { id: "geografie", kind: "water", label: "Mountain lakes", x: "68%", y: "41%", color: "#496f86", tip: "Lakes and river systems around the central mountains." },
+      { id: "gorash", kind: "state", label: "Gorash", x: "67%", y: "69%", color: "#8d5d24", tip: "Orcish tribal confederation in southern deserts, semi-deserts and oasis towns." },
+      { id: "gorash", kind: "region", label: "Southern deserts", x: "74%", y: "66%", color: "#8d5d24", tip: "Dry plains and deserts of orcish expansion." },
+      { id: "voelker", kind: "region", label: "Fae lands", x: "86%", y: "27%", color: "#6b8c6f", tip: "Dense northeastern jungle; most important fae region." },
+      { id: "voelker", kind: "landmark", label: "Northeast jungle", x: "88%", y: "38%", color: "#4f7b45", tip: "Very dense, sparsely populated jungle in the far northeast." },
+      { id: "geografie", kind: "water", label: "Eastern lake", x: "81%", y: "35%", color: "#496f86", tip: "Large elongated lake region of the eastern landmass." },
+      { id: "geografie", kind: "water", label: "Northeast lake", x: "80%", y: "29%", color: "#496f86", tip: "Northern lake near the fae lands." },
+      { id: "geografie", kind: "water", label: "Southeast coast", x: "84%", y: "58%", color: "#496f86", tip: "River and coastal spaces of the southeastern landmass." },
+      { id: "geografie", kind: "region", label: "Southern islands", x: "62%", y: "74%", color: "#b67c2d", tip: "Southern islands and peninsulas at the edge of the Central Sea." }
+    ];
+
+    const uiText = {
+      de: {
+        siteIntro: "Ein kanonisches Nachschlagewerk zur bekannten Welt Suvelia: Staaten, Völker, Kriege, Herrscher und Seewege in der Form einer mittelalterlichen Enzyklopädie.",
+        meta: "Bekannte Welt: Europa-Größe<br>Stand der Technik: 11. Jahrhundert<br>Magie: keine klassische Magie<br>Hauptkonflikt: fragile Nachkriegsordnung",
+        settingsLabel: "Wiki-Einstellungen",
+        langLabel: "Sprache auswählen",
+        register: "Register",
+        searchLabel: "Wiki durchsuchen",
+        searchPlaceholder: "Artikel suchen...",
+        searchResults: "Suchergebnisse",
+        noResults: "Keine Treffer",
+        legendTitle: "Kartenfarben",
+        legendHumans: "Menschliche Reiche",
+        legendElves: "Elfenreich",
+        legendOrcs: "Orkische Gebiete",
+        legendDwarves: "Zwergenmacht",
+        legendTrade: "Neutraler Seehandel",
+        legendWater: "Gewässer und Engstellen",
+        legendRoutes: "Handelsrouten",
+        tocTitle: "Inhalt",
+        tocSubTitle: "Kapitel",
+        mapAlt: "Karte der bekannten Welt Suvelia",
+        mapNote: "Die Atlasmarker benennen erkennbare Großräume, Seen, Buchten, Routen, Städte und Machtzentren. Sie dienen der Orientierung und zeigen keine exakt vermessenen Grenzen.",
+        topLabel: "Zurück nach oben"
+      },
+      en: {
+        siteIntro: "A canonical reference work for the known world of Suvelia: states, peoples, wars, rulers and sea lanes in the form of a medieval encyclopedia.",
+        meta: "Known world: Europe-sized<br>Technology level: 11th century<br>Magic: no classical magic<br>Main conflict: fragile postwar order",
+        settingsLabel: "Wiki settings",
+        langLabel: "Choose language",
+        register: "Index",
+        searchLabel: "Search the wiki",
+        searchPlaceholder: "Search articles...",
+        searchResults: "Search results",
+        noResults: "No results",
+        legendTitle: "Map colors",
+        legendHumans: "Human realms",
+        legendElves: "Elven realm",
+        legendOrcs: "Orcish territories",
+        legendDwarves: "Dwarven power",
+        legendTrade: "Neutral sea trade",
+        legendWater: "Waters and straits",
+        legendRoutes: "Trade routes",
+        tocTitle: "Contents",
+        tocSubTitle: "Chapters",
+        mapAlt: "Map of the known world of Suvelia",
+        mapNote: "The atlas markers name recognizable great regions, lakes, bays, routes, cities and power centers. They are for orientation and do not show precisely measured borders.",
+        topLabel: "Back to top"
+      }
+    };
+
+    const urlLanguage = new URLSearchParams(location.search).get("lang");
+    let currentLanguage = urlLanguage === "en" || urlLanguage === "de"
+      ? urlLanguage
+      : localStorage.getItem("suvelia-language") || "de";
     const navList = document.getElementById("navList");
     const articleContent = document.getElementById("articleContent");
     const infobox = document.getElementById("infobox");
@@ -1410,6 +1814,8 @@
     const searchInput = document.getElementById("searchInput");
     const suggestions = document.getElementById("suggestions");
     const backTop = document.getElementById("backTop");
+    const mastheadMeta = document.getElementById("mastheadMeta");
+    const languageButtons = document.querySelectorAll("[data-lang]");
 
     function slugify(value) {
       return value.toLowerCase()
@@ -1423,8 +1829,47 @@
       return `#/${id}`;
     }
 
+    function getArticles() {
+      return currentLanguage === "en" ? articlesEn : articles;
+    }
+
+    function getArticleById(id) {
+      return new Map(getArticles().map(article => [article.id, article])).get(id);
+    }
+
+    function getMarkers() {
+      return currentLanguage === "en" ? markerDataEn : markerData;
+    }
+
+    function getUi() {
+      return uiText[currentLanguage] || uiText.de;
+    }
+
+    function applyStaticLanguage() {
+      const ui = getUi();
+      document.documentElement.lang = currentLanguage;
+      document.querySelector(".masthead p").textContent = ui.siteIntro;
+      document.querySelector(".masthead-controls").setAttribute("aria-label", ui.settingsLabel);
+      document.querySelector(".language-toggle").setAttribute("aria-label", ui.langLabel);
+      mastheadMeta.innerHTML = ui.meta;
+      document.getElementById("registerTitle").textContent = ui.register;
+      document.getElementById("searchLabel").textContent = ui.searchLabel;
+      searchInput.placeholder = ui.searchPlaceholder;
+      suggestions.setAttribute("aria-label", ui.searchResults);
+      document.getElementById("legendTitle").textContent = ui.legendTitle;
+      document.querySelectorAll("[data-ui]").forEach(node => {
+        node.textContent = ui[node.dataset.ui] || node.textContent;
+      });
+      document.getElementById("tocTitle").textContent = ui.tocTitle;
+      document.getElementById("tocSubTitle").textContent = ui.tocSubTitle;
+      backTop.setAttribute("aria-label", ui.topLabel);
+      languageButtons.forEach(button => {
+        button.setAttribute("aria-pressed", String(button.dataset.lang === currentLanguage));
+      });
+    }
+
     function renderNav(activeId) {
-      navList.innerHTML = articles.map(article => `
+      navList.innerHTML = getArticles().map(article => `
         <li><a class="nav-link ${article.id === activeId ? "active" : ""}" href="${linkTo(article.id)}">${article.title}</a></li>
       `).join("");
     }
@@ -1444,7 +1889,8 @@
     }
 
     function renderMap() {
-      const markers = markerData.map(marker => `
+      const ui = getUi();
+      const markers = getMarkers().map(marker => `
         <a class="map-marker map-${marker.kind || "state"} ${marker.minor ? "map-minor" : ""}" href="${linkTo(marker.id)}" style="--x:${marker.x};--y:${marker.y};--c:${marker.color}" aria-label="${marker.label}: ${marker.tip}">
           <span class="label-text">${marker.label}</span>
           <span class="tooltip">${marker.tip}</span>
@@ -1453,10 +1899,10 @@
       return `
         <figure class="map-plate">
           <div class="map-inner">
-            <img src="suvelia-map.png" alt="Karte der bekannten Welt Suvelia">
+            <img src="suvelia-map.png" alt="${ui.mapAlt}">
             ${markers}
           </div>
-          <figcaption class="map-note">Die Atlasmarker benennen erkennbare Großräume, Seen, Buchten, Routen, Städte und Machtzentren. Sie dienen der Orientierung und zeigen keine exakt vermessenen Grenzen.</figcaption>
+          <figcaption class="map-note">${ui.mapNote}</figcaption>
         </figure>
       `;
     }
@@ -1464,7 +1910,7 @@
     function renderCards() {
       return `
         <div class="wiki-grid">
-          ${articles.filter(article => article.id !== "suvelia").map(article => `
+          ${getArticles().filter(article => article.id !== "suvelia").map(article => `
             <a class="wiki-card" href="${linkTo(article.id)}">
               <strong>${article.title}</strong>
               <span>${article.subtitle}</span>
@@ -1490,7 +1936,8 @@
     }
 
     function renderArticle(id) {
-      const article = articleById.get(id) || articleById.get("suvelia");
+      applyStaticLanguage();
+      const article = getArticleById(id) || getArticleById("suvelia");
       document.title = `${article.title} - Suvelia-Wiki`;
       renderNav(article.id);
       renderInfobox(article);
@@ -1518,6 +1965,7 @@
     }
 
     function searchArticles(query) {
+      const ui = getUi();
       const normalized = query.trim().toLowerCase();
       if (!normalized) {
         suggestions.classList.remove("visible");
@@ -1525,7 +1973,7 @@
         return;
       }
 
-      const results = articles.filter(article => {
+      const results = getArticles().filter(article => {
         const haystack = [
           article.title,
           article.type,
@@ -1538,7 +1986,7 @@
 
       suggestions.innerHTML = results.length
         ? results.map(article => `<li><a class="suggestion-link" href="${linkTo(article.id)}">${article.title}</a></li>`).join("")
-        : `<li><span class="suggestion-link">Keine Treffer</span></li>`;
+        : `<li><span class="suggestion-link">${ui.noResults}</span></li>`;
       suggestions.classList.add("visible");
     }
 
@@ -1548,6 +1996,16 @@
         searchInput.value = "";
         suggestions.classList.remove("visible");
       }
+    });
+
+    languageButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        currentLanguage = button.dataset.lang;
+        localStorage.setItem("suvelia-language", currentLanguage);
+        searchInput.value = "";
+        suggestions.classList.remove("visible");
+        route();
+      });
     });
 
     window.addEventListener("hashchange", route);
