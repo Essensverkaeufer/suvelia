@@ -534,6 +534,112 @@
       filter: sepia(0.18) saturate(0.86) contrast(1.04);
     }
 
+    .map-toggle {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .map-layer-controls {
+      position: absolute;
+      z-index: 5;
+      top: 10px;
+      right: 10px;
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid rgba(255, 231, 171, 0.48);
+      border-radius: 999px;
+      background: rgba(44, 28, 15, 0.76);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(4px);
+    }
+
+    .map-layer-controls label {
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: #f7e7bd;
+      cursor: pointer;
+      font: 700 0.72rem/1 var(--ui);
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .map-toggle-political:checked ~ .map-layer-controls label[for$="-political"],
+    .map-toggle-culture:checked ~ .map-layer-controls label[for$="-culture"] {
+      background: #f1d28c;
+      color: #2d1b0d;
+    }
+
+    .marker-layer,
+    .culture-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    .marker-layer {
+      z-index: 3;
+      transition: opacity 180ms ease;
+    }
+
+    .culture-layer {
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+    }
+
+    .map-toggle-culture:checked ~ .culture-layer {
+      opacity: 1;
+    }
+
+    .map-toggle-culture:checked ~ .marker-layer {
+      opacity: 0.22;
+    }
+
+    .culture-zone {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--w);
+      height: var(--h);
+      transform: translate(-50%, -50%) rotate(var(--r));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid color-mix(in srgb, var(--c) 72%, #fff4c8);
+      border-radius: 48% 42% 46% 44%;
+      background:
+        radial-gradient(circle at 42% 38%, color-mix(in srgb, var(--c) 42%, transparent), transparent 68%),
+        color-mix(in srgb, var(--c) 28%, transparent);
+      box-shadow: inset 0 0 0 1px rgba(255, 245, 215, 0.2), 0 0 18px color-mix(in srgb, var(--c) 28%, transparent);
+      mix-blend-mode: multiply;
+    }
+
+    .culture-zone.transition {
+      border-style: dashed;
+      opacity: 0.76;
+    }
+
+    .culture-zone.small {
+      width: var(--w);
+      height: var(--h);
+      border-radius: 999px;
+      opacity: 0.86;
+    }
+
+    .culture-zone span {
+      max-width: 90%;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(35, 23, 12, 0.72);
+      color: #fff0c0;
+      text-align: center;
+      text-shadow: 0 1px 2px #000;
+      font: 800 clamp(0.56rem, 1.1vw, 0.78rem)/1.05 var(--ui);
+      letter-spacing: 0;
+      mix-blend-mode: normal;
+    }
+
     .map-marker {
       position: absolute;
       left: var(--x);
@@ -1068,7 +1174,7 @@
         sections: [
           {
             heading: "Caldria",
-            html: "<p>Caldria ist die große westliche Insel und fast vollständig menschlich geprägt. Etwa sechzig Prozent der Insel gehören zum Kaiserreich Valdoria, vor allem der Westen, der Süden und bedeutende landwirtschaftliche Kernräume. Der Rest besteht aus etwa fünfzehn kleineren Stadtstaaten, Fürstentümern und Königreichen.</p>"
+            html: "<p>Caldria ist die große westliche Insel und fast vollständig menschlich geprägt. Etwa sechzig Prozent der Insel gehören zum Kaiserreich Valdoria, vor allem der Westen, der Süden und bedeutende landwirtschaftliche Kernräume. Der Rest besteht aus etwa fünfzehn kleineren Stadtstaaten, Fürstentümern und Königreichen.</p><p>Kulturell ist Caldria nicht einheitlich. Die menschlichen Kulturen gehen auf alt-valdorische Grundlagen zurück, haben sich aber in haldrenische, vezkarische, rudavische und tirassische Großräume aufgespalten. Siehe <a href='#/kulturen-caldria'>Kulturen Caldrias</a>.</p>"
           },
           {
             heading: "Östliche Großlandmasse",
@@ -1081,6 +1187,10 @@
           {
             heading: "Nordöstlicher Dschungel",
             html: "<p>Der äußerste Nordosten der östlichen Landmasse ist von extrem dichtem Dschungel bedeckt. Er ist dünn besiedelt, schwer zu durchqueren und steht in enger Verbindung zu den Feen. Für viele Reiche ist die Region mehr Mythos als verwaltbares Gebiet.</p>"
+          },
+          {
+            heading: "Kultur-Overlay",
+            html: "<p>Die Weltkarte besitzt eine umschaltbare Kultur-Ebene. Sie zeigt die großen menschlichen Kulturfamilien Caldrias als weiche Räume über der politischen Karte: Tirassisch im Norden, Rudavisch im Zentrum, Haldrenisch im Süden und Südwesten sowie Vezkarisch im Südosten. Übergangszonen wie Karvain, Bravena, Edrain, Sorevia und Varethis sind bewusst nicht hart getrennt.</p>"
           }
         ]
       },
@@ -1108,6 +1218,10 @@
           {
             heading: "Politisches System",
             html: "<p>Das Kaiserreich ist eine Erbmonarchie mit imperial-feudalem Mischsystem. Der Kaiser ist stark, aber nicht absolut. Direkt kontrolliertes Kronland, Herzogtümer, Grafschaften, Fürstentümer, halbautonome Grenzgebiete und privilegierte Städte bilden zusammen ein Reich, das im Kern gut verwaltet und an den Rändern deutlich lockerer gebunden ist.</p>"
+          },
+          {
+            heading: "Kulturelle Räume",
+            html: "<p>Valdoria ist kein kulturell einheitlicher Block. Der Süden und Südwesten sind stark haldrenisch geprägt, das Zentrum ist rudavisch, der Südosten vezkarisch. Varethis selbst besitzt als Hauptstadt eine gemischte imperiale Hofkultur, in der archaische Reichsnamen und alt-valdorische Verwaltungsformen bewusst gepflegt werden. Die nördlichen Abspaltungen gehören überwiegend zur tirassischen Kulturfamilie.</p><p>Diese Unterschiede erklären, warum Loyalität zum Kaiserreich, regionale Adelspolitik, Militärtraditionen und Alltagskultur in Valdoria nicht überall gleich funktionieren.</p>"
           },
           {
             heading: "Haus Varell",
@@ -1144,15 +1258,15 @@
         sections: [
           {
             heading: "Überblick",
-            html: `<p>Nord-Caldria besteht vier Jahre nach Ende des Valdorischen Bürgerkriegs aus elf faktisch unabhängigen Staaten. Valdoria erkennt ihre Unabhängigkeit offiziell nicht an und betrachtet sie weiterhin als rebellische Reichsgebiete.</p><p>Die Staaten besitzen keine gemeinsame Regierung, kein dauerhaftes Verteidigungsbündnis und keine einheitliche politische Ideologie. Sie teilen eine gewisse nordcaldrische Identität und die Erfahrung des Bürgerkriegs, verfolgen aber überwiegend eigene Interessen. Kein Staat ist eindeutig mächtig genug, den Norden zu dominieren.</p><p>Politisch besteht die Region aus zwei Königreichen, vier Fürstentümern, zwei Republiken, zwei Handelsrepubliken und einer Freien Stadt.</p>`
+            html: `<p>Nord-Caldria besteht vier Jahre nach Ende des Valdorischen Bürgerkriegs aus elf faktisch unabhängigen Staaten. Valdoria erkennt ihre Unabhängigkeit offiziell nicht an und betrachtet sie weiterhin als rebellische Reichsgebiete.</p><p>Die Staaten besitzen keine gemeinsame Regierung, kein dauerhaftes Verteidigungsbündnis und keine einheitliche politische Ideologie. Sie teilen eine gewisse nordcaldrische Identität und die Erfahrung des Bürgerkriegs, verfolgen aber überwiegend eigene Interessen. Kein Staat ist eindeutig mächtig genug, den Norden zu dominieren.</p><p>Politisch besteht die Region aus zwei Königreichen, vier Fürstentümern, zwei Republiken, zwei Handelsrepubliken und einer Freien Stadt. Kulturell gehört Nord-Caldria überwiegend zur tirassischen Kulturfamilie: städtischer, öffentlicher, handelsnäher und stärker von lokalen Varianten geprägt als das valdorische Zentrum.</p>`
           },
           {
             heading: "Staatsregister",
-            html: `<div class='table-wrap'><table><thead><tr><th>Staat</th><th>Form und Zentrum</th><th>Charakter</th><th>Stärke</th><th>Schwäche oder Gefahr</th></tr></thead><tbody><tr><td><b>Aereth</b></td><td>Erbmonarchie; Haus Aereth; Hauptstadt Caerath; westlicher bis nordwestlicher Binnenraum</td><td>Altes Land mit junger Unabhängigkeit; wiederbelebter historischer Königstitel</td><td>Bevölkerung, Landwirtschaft, Weinwirtschaft, alter Landadel, Reiterfamilien</td><td>Geldmangel, innere Loyalitätsbrüche, pro-valdorischer Hochadel</td></tr><tr><td><b>Norvain</b></td><td>Erbmonarchie; Hauptstadt Rovan; östlicher bis nordöstlicher Norden</td><td>Stolzes Veteranenkönigreich, aus dem Bürgerkrieg geboren</td><td>Bogenschützen, Veteranen, befestigte Städte, Offiziere, Milizen</td><td>Kleine wirtschaftliche Basis, demografische Schwäche, Putschgefahr</td></tr><tr><td><b>Sorevia</b></td><td>Handelsrepublik; Hochkonsul Marcen Morov; Hauptstadt Sorev; nordwestliche Küste</td><td>Handel, Diplomatie, Banken und Morov-Netzwerke</td><td>Häfen, Luxuswaren, Finanzwesen, internationale Beziehungen, private bewaffnete Schiffe</td><td>Misstrauen der Nachbarn und geheime Finanzhilfe aus Morovia</td></tr><tr><td><b>Karvain</b></td><td>Erbliches Fürstentum; Hauptstadt Karven; südlicher Rand an Valdoria</td><td>Grenzstaat unter ständigem Rückeroberungsdruck</td><td>Alte valdorische Festungen, Grenzüberwachung, schnelle lokale Mobilisierung</td><td>Extreme strategische Verwundbarkeit</td></tr><tr><td><b>Terevon</b></td><td>Erbliches Fürstentum; Hauptstadt Terenhal; nördliches Binnenland</td><td>Klassischer feudaler Kleinstaat aus Städten, Burgen, Dörfern, Tälern und Adelshäusern</td><td>Kompakte Herrschaft, persönliche Hofpolitik, lokale Loyalität</td><td>Armut, Familienfehden, alte Kriegsschulden</td></tr><tr><td><b>Halvek</b></td><td>Erbliches Fürstentum; Hauptstadt Halvar; westlicher Norden bei Seen und Feuchtgebieten</td><td>Rauer Regionalstaat mit starker lokaler Identität</td><td>Holz, Fischerei, Flusshandel, kleinere Werften, schwer kontrollierbares Gelände</td><td>Schlechte Landverbindungen und häufige Grenzkonflikte</td></tr><tr><td><b>Edrain</b></td><td>Erbliches Fürstentum; Hauptstadt Edras; zentraler Norden</td><td>Konservativer Adelsstaat mit starker institutioneller Kontinuität</td><td>Alte Verwaltung, Beamte, Richter, lokale Verwaltungsfamilien</td><td>Starke pro-valdorische Elite</td></tr><tr><td><b>Lyras</b></td><td>Präsidentielle Republik; Hauptstadt Lyren; zentral-nördlicher Handelsraum</td><td>Moderates republikanisches Experiment und wichtigster Befürworter eines Nordbundes</td><td>Politische Institutionen, Diplomatie, Veteranen, Bürgerwehr</td><td>Innere Fraktionen, pro-valdorische Gegenbewegung, Stadt-Land-Zerfall</td></tr><tr><td><b>Bravena</b></td><td>Republik; Hauptstadt Braven; östliches Binnenland</td><td>Veteranen- und Bürgerstaat aus Städten, Landbesitzern, Offizieren und bäuerlichen Gemeinden</td><td>Politische Mobilisierung, aktive Bevölkerung, ehemalige Rebellenorganisatoren</td><td>Schwache Wirtschaft; exilierte Fürstenfamilie könnte mit Valdoria zurückkehren</td></tr><tr><td><b>Vareza</b></td><td>Oligarchische Handelsrepublik; Voller Rat der Kaufleute; Hauptstadt Varez; nordöstliche Küste</td><td>Gegenmodell zu Sorevia und unabhängige nordcaldrische Handelsmacht</td><td>Textilien, Seehandel, Kaufmannshäuser, Zölle, kleinere Banken, Handel mit Elyndra</td><td>Extreme Oligarchie, alte schwache Flotte, drohender Arbeiteraufstand</td></tr><tr><td><b>Ossera</b></td><td>Freie Stadt; Hauptstadt Ossera; zwischen mehreren größeren Nordstaaten</td><td>Kleiner neutraler Stadtstaat und diplomatischer Treffpunkt</td><td>Märkte, Vermittlung, Gasthäuser, Handwerk, Zwischenhandel, Konferenzen</td><td>Fast keine strategische Tiefe, militärisch schwach, voller Spione</td></tr></tbody></table></div>`
+            html: `<div class='table-wrap'><table><thead><tr><th>Staat</th><th>Form und Zentrum</th><th>Charakter</th><th>Stärke</th><th>Schwäche oder Gefahr</th></tr></thead><tbody><tr><td><b>Aereth</b></td><td>Erbmonarchie; Haus Aereth; Hauptstadt Caerath; nördlicher Raum</td><td>Altes Land mit junger Unabhängigkeit; wiederbelebter historischer Königstitel</td><td>Bevölkerung, Landwirtschaft, Weinwirtschaft, alter Landadel, Reiterfamilien</td><td>Geldmangel, innere Loyalitätsbrüche, pro-valdorischer Hochadel</td></tr><tr><td><b>Norvain</b></td><td>Erbmonarchie; Hauptstadt Rovan; nordöstlicher Raum</td><td>Stolzes Veteranenkönigreich, aus dem Bürgerkrieg geboren</td><td>Bogenschützen, Veteranen, befestigte Städte, Offiziere, Milizen</td><td>Kleine wirtschaftliche Basis, demografische Schwäche, Putschgefahr</td></tr><tr><td><b>Sorevia</b></td><td>Handelsrepublik; Hochkonsul Marcen Morov; Hauptstadt Sorev; östliche Küste Nord-Caldrias</td><td>Handel, Diplomatie, Banken und Morov-Netzwerke</td><td>Häfen, Luxuswaren, Finanzwesen, internationale Beziehungen, private bewaffnete Schiffe</td><td>Misstrauen der Nachbarn und geheime Finanzhilfe aus Morovia</td></tr><tr><td><b>Karvain</b></td><td>Erbliches Fürstentum; Hauptstadt Karven; südöstlicher Rand an Valdoria</td><td>Grenzstaat unter ständigem Rückeroberungsdruck</td><td>Alte valdorische Festungen, Grenzüberwachung, schnelle lokale Mobilisierung</td><td>Extreme strategische Verwundbarkeit</td></tr><tr><td><b>Terevon</b></td><td>Erbliches Fürstentum; Hauptstadt Terenhal; zentral-nördlicher Raum</td><td>Klassischer feudaler Kleinstaat aus Städten, Burgen, Dörfern, Tälern und Adelshäusern</td><td>Kompakte Herrschaft, persönliche Hofpolitik, lokale Loyalität</td><td>Armut, Familienfehden, alte Kriegsschulden</td></tr><tr><td><b>Halvek</b></td><td>Erbliches Fürstentum; Hauptstadt Halvar; westlicher Mittelraum bei Seen und Feuchtgebieten</td><td>Rauer Regionalstaat mit starker lokaler Identität</td><td>Holz, Fischerei, Flusshandel, kleinere Werften, schwer kontrollierbares Gelände</td><td>Schlechte Landverbindungen und häufige Grenzkonflikte</td></tr><tr><td><b>Edrain</b></td><td>Erbliches Fürstentum; Hauptstadt Edras; zentraler Norden</td><td>Konservativer Adelsstaat mit starker institutioneller Kontinuität</td><td>Alte Verwaltung, Beamte, Richter, lokale Verwaltungsfamilien</td><td>Starke pro-valdorische Elite</td></tr><tr><td><b>Lyras</b></td><td>Präsidentielle Republik; Hauptstadt Lyren; südwestlicher Binnenraum</td><td>Moderates republikanisches Experiment und wichtigster Befürworter eines Nordbundes</td><td>Politische Institutionen, Diplomatie, Veteranen, Bürgerwehr</td><td>Innere Fraktionen, pro-valdorische Gegenbewegung, Stadt-Land-Zerfall</td></tr><tr><td><b>Bravena</b></td><td>Republik; Hauptstadt Braven; südliches Zentrum</td><td>Veteranen- und Bürgerstaat aus Städten, Landbesitzern, Offizieren und bäuerlichen Gemeinden</td><td>Politische Mobilisierung, aktive Bevölkerung, ehemalige Rebellenorganisatoren</td><td>Schwache Wirtschaft; exilierte Fürstenfamilie könnte mit Valdoria zurückkehren</td></tr><tr><td><b>Vareza</b></td><td>Oligarchische Handelsrepublik; Voller Rat der Kaufleute; Hauptstadt Varez; westlicher bis südwestlicher Raum</td><td>Gegenmodell zu Sorevia und unabhängige nordcaldrische Handelsmacht</td><td>Textilien, Seehandel, Kaufmannshäuser, Zölle, kleinere Banken, Handel mit Elyndra</td><td>Extreme Oligarchie, alte schwache Flotte, drohender Arbeiteraufstand</td></tr><tr><td><b>Ossera</b></td><td>Freie Stadt; Hauptstadt Ossera; unteres Zentrum, türkis markierter Kleinstaat</td><td>Kleiner neutraler Stadtstaat und diplomatischer Treffpunkt</td><td>Märkte, Vermittlung, Gasthäuser, Handwerk, Zwischenhandel, Konferenzen</td><td>Fast keine strategische Tiefe, militärisch schwach, voller Spione</td></tr></tbody></table></div>`
           },
           {
             heading: "Kartenverteilung und Achsen",
-            html: `<p>Die grobe Verteilung legt Sorevia, Halvek und Aereth in den Nordwesten; Edrain, Terevon, Lyras und Ossera in den zentralen Norden; Norvain, Bravena und Vareza in den Nordosten; Karvain an die südliche Grenze zum verbliebenen Valdoria.</p><div class='timeline'><div class='timeline-item'><b>Westliche Handelsachse</b>Sorevia, Aereth und Halvek verbinden Küstenhandel, Wein- und Agrarräume, Holz, Fischerei und Wasserwege.</div><div class='timeline-item'><b>Zentrale politische Achse</b>Lyras, Edrain, Terevon und Ossera bilden den Raum für Bundesideen, konservative Verwaltung, dynastische Intrigen und diplomatische Konferenzen.</div><div class='timeline-item'><b>Östliche Rivalitätsachse</b>Norvain, Bravena und Vareza verbinden Veteranenpolitik, republikanische Mobilisierung und wirtschaftliche Konkurrenz.</div><div class='timeline-item'><b>Valdorische Front</b>Karvain lebt direkt mit der Frage, wann Valdoria zurückkommt, und wäre erstes Schlachtfeld oder erster geheimer Kompromisskandidat.</div></div>`
+            html: `<p>Nach der aktuellen Detailkarte liegt Aereth ganz im Norden. Halvek sitzt westlich darunter, Terevon im zentral-nördlichen Raum und Norvain nordöstlich davon. Sorevia nimmt die östliche Küstenzone ein. Edrain liegt zentral, Vareza westlich bis südwestlich, Bravena im südlichen Zentrum, Karvain am südöstlichen Grenzsaum, Lyras im Südwesten und Ossera als türkis markierte Freie Stadt am unteren Zentrum.</p><div class='timeline'><div class='timeline-item'><b>Nördlicher Kronenbogen</b>Aereth, Terevon und Norvain bilden die nördliche Prestige- und Verteidigungszone zwischen alter Krone, Feudalstaat und Veteranenkönigreich.</div><div class='timeline-item'><b>Westlicher Druckraum</b>Halvek, Vareza und Lyras verbinden Wasserwege, Handelskonkurrenz, republikanische Politik und soziale Spannungen.</div><div class='timeline-item'><b>Östliche Handelskante</b>Sorevia kontrolliert die grüne östliche Küstenzone und steht wirtschaftlich gegen Vareza, politisch gegen Lyras und diplomatisch unter Morov-Verdacht.</div><div class='timeline-item'><b>Südliche Front</b>Bravena, Karvain und Ossera liegen nahe an Valdorias Druckraum: Mobilisierung, Festungen und diplomatische Vermittlung treffen hier direkt aufeinander.</div></div>`
           },
           {
             heading: "Aereth",
@@ -1410,7 +1524,7 @@
         sections: [
           {
             heading: "Überblick",
-            html: "<p>Sorevia ist eine menschliche Handelsrepublik an der nordwestlichen Küste Caldrias und einer der elf Staaten <a href='#/nord-caldria'>Nord-Caldrias</a>. Der Staat wird von Hochkonsul Marcen Morov geführt, einem Cousin und engen Freund König Dawson Morovs.</p><p>Sorevia ist ausdrücklich kein morovisches Kolonialgebiet. Es besitzt eigene politische Institutionen, eigene Kaufmannsfamilien, eigene Interessen, eigene militärische Kräfte und eine eigenständige republikanische Tradition.</p>"
+            html: "<p>Sorevia ist eine menschliche Handelsrepublik an der östlichen Küste Nord-Caldrias und einer der elf Staaten <a href='#/nord-caldria'>Nord-Caldrias</a>. Der Staat wird von Hochkonsul Marcen Morov geführt, einem Cousin und engen Freund König Dawson Morovs.</p><p>Sorevia ist ausdrücklich kein morovisches Kolonialgebiet. Es besitzt eigene politische Institutionen, eigene Kaufmannsfamilien, eigene Interessen, eigene militärische Kräfte und eine eigenständige republikanische Tradition.</p>"
           },
           {
             heading: "Politische Bedeutung",
@@ -1464,6 +1578,58 @@
           {
             heading: "Riesen",
             html: "<p>Riesen sind intelligente, 3 bis 4 Meter große Humanoide. Sie bilden kein Großreich, sondern leben in einzelnen Clans. Ein Riesenclan kann militärisch bedeutend sein, ohne dass Riesen eine Weltmacht darstellen.</p>"
+          }
+        ]
+      },
+      {
+        id: "kulturen-caldria",
+        title: "Kulturen Caldrias",
+        type: "Kulturartikel",
+        subtitle: "Caldrias heutige Menschenkulturen stammen aus der Alt-Valdorischen Kultur, entwickelten sich aber seit etwa 750 Jahren regional auseinander.",
+        tags: ["Caldria", "Kultur", "Haldrenisch", "Vezkarisch", "Rudavisch", "Tirassisch", "Alt-Valdorisch", "Sprache", "Namen"],
+        infobox: {
+          "Ursprung": "Alt-Valdorische Kultur",
+          "Aufspaltung": "ab ca. 750 Jahren vor der Gegenwart",
+          "Großfamilien": "Haldrenisch, Vezkarisch, Rudavisch, Tirassisch",
+          "Grenzen": "nicht deckungsgleich mit Staatsgrenzen",
+          "Sonderfall": "Morovia entwickelte sich separat"
+        },
+        sections: [
+          {
+            heading: "Grundprinzip",
+            html: `<p>Caldria ist kulturell nicht in saubere Blöcke geteilt. Die menschlichen Kulturen bilden vier große regionale Kulturfamilien mit Übergangszonen. Alle stammen aus der Alt-Valdorischen Kultur, die sich nach der Reichsgründung zunächst fast über ganz Caldria verbreitete und sich dann ungefähr 750 Jahre vor der Gegenwart regional auseinanderentwickelte.</p><p>Die Unterschiede sind groß, aber nicht absolut. Ein Haldren aus dem tiefen Süden und ein Tirassier aus Sorevia können sich deutlich fremd vorkommen und trotzdem ähnliche religiöse Grundvorstellungen, alte Kaiserchroniken, verwandte Rechtsbegriffe, viele gemeinsame Wörter und dieselben grundlegenden sozialen Kategorien kennen.</p>`
+          },
+          {
+            heading: "Kulturkarte",
+            html: `<p>Die Kartenebene Kultur zeigt die großen Räume grob über der politischen Karte: Tirassisch im Norden, Rudavisch im Zentrum, Haldrenisch im Süden und Südwesten, Vezkarisch im Südosten. Gestrichelte Zonen markieren Mischräume wie Edrain, Bravena, Karvain, Varethis und Sorevia.</p><p>Die Grenzen sind bewusst weich. Besonders Karvain, Bravena und Edrain liegen zwischen Traditionen; Varethis besitzt eine eigene imperiale Hofkultur, und Morovia entwickelte sich separat aus später valdorischer Handels- und Hofsprache.</p>`
+          },
+          {
+            heading: "Alt-Valdorische Kultur",
+            html: `<p>Die Alt-Valdorische Kultur war ursprünglich nicht die Kultur ganz Caldrias, sondern die hochorganisierte Kultur des politischen und militärischen Kernraums, aus dem Valdoria entstand. Sie war geprägt von Stadtbürgern, Landbesitzern, Berufssoldaten, Beamten, Händlern, Juristen, Tempelverwaltungen und großen Familienverbänden.</p><p>Wichtig waren Gesetz, Eigentum, Pflicht, öffentliche Ordnung, militärischer Dienst, Familie und religiöse Legitimität. Bedeutung entstand nicht nur durch Geburt, sondern auch durch Amt, Vermögen, militärischen Rang, Bildung, Familiennetzwerk und öffentlichen Ruf.</p><p>Die alt-valdorische Stadt war befestigt, verwaltet und politisch verstanden: Mauern, Plätze, Tempelbezirke, Märkte, Speicher, Wasseranlagen und Bekanntmachungsflächen machten sie zu einer Gemeinschaft, nicht nur zu Häusern. Dieses Erbe lebt besonders in Lyras, Sorevia, Vareza, Ossera und Morovia weiter.</p>`
+          },
+          {
+            heading: "Aufspaltung",
+            html: `<p>Nach Aldren I. Varells Reichsgründung entsandte die Krone Beamte, Veteranen, Händler, Priester, Handwerker, Verwalter und Adelsfamilien in fast alle Teile des neuen Reiches. In der ersten Generation konnten Beamte im Norden und Offiziere im Süden noch dieselbe Verwaltungssprache, ähnliche Namen und dieselben Reichsgesetze nutzen.</p><p>Etwa fünfzig Jahre nach der Reichsgründung begann die Einheit langsam zu zerfallen. Geografie, Heiratskreise, militärische Spezialisierung, Wirtschaft, schwächere direkte Kontrolle und regionale Alltagssprache trennten Süden, Zentrum, Südosten und Norden über Generationen.</p>`
+          },
+          {
+            heading: "Haldrenische Kultur",
+            html: `<p>Die haldrenische Kultur dominiert den Süden, den tiefen Südwesten, große südliche Binnengebiete und Teile der südlichen Küstenräume. Ihr Name leitet sich von Haldra ab, einer alten südlichen Großregion, die als kulturelle und geografische Bezeichnung überlebte.</p><p>Haldra wurde durch Militärkolonien, Landgüter, befestigte Straßen, Veteranensiedlungen und königliche Forstgebiete geprägt. Daraus entstand eine Gesellschaft, in der Grundbesitz, persönliche Pflicht, militärische Tradition, Hausgemeinschaft und Vertragsgenauigkeit besonders wichtig wurden.</p><p>Haldrenisch klingt hart: stärkere Konsonanten, harte Endungen, zusammengesetzte Begriffe und lange Familiennamen. Typische Namenselemente sind -rik, -mar, -win, -wald, -hart, -gard, -hild und -mund. Kulturwerte sind Zuverlässigkeit, Pflicht, Besitzpflege, Ehrlichkeit im Vertrag und Misstrauen gegenüber Verschwendung.</p><div class='table-wrap'><table><thead><tr><th>Beispiele</th><th>Namen</th></tr></thead><tbody><tr><td>Männer</td><td>Alerik, Albrik, Berwald, Brunmar, Hadrik, Othmar, Volkhard, Wilhart</td></tr><tr><td>Frauen</td><td>Adelra, Alwena, Berhild, Brunela, Marhild, Rovina, Thelena, Haldrina</td></tr><tr><td>Familien</td><td>Falkenau, Dornwald, Eisenhain, Rotfeld, Silbermark, Steinwehr, Rabenmark</td></tr></tbody></table></div>`
+          },
+          {
+            heading: "Vezkarische Kultur",
+            html: `<p>Die vezkarische Kultur liegt im Südosten, im südöstlichen Küstenraum, im östlichen Grenzland und im Flussgebiet zwischen Zentrum und Küste. Vezkar war ursprünglich ein größerer südöstlicher Fluss- und Grenzraum.</p><p>Der Südosten wurde durch südliche Militärsiedler, zentrale Bauern, Händler, Grenzadel, Flüchtlinge und Beamte geprägt. Wechselnde Grenzen, Befestigungen, Handelsmärkte und gemischte Siedlungen machten die Kultur zugleich hart, flexibel, lokal und kosmopolitisch.</p><p>Vezkarisch besitzt starke Konsonantengruppen, weichere Endungen, wechselnde Betonung, Doppelformen und viele Kurzformen. Typische Elemente sind -vek, -szan, -ren, -mar, -vicz, -nik, -ara und -ena. Werte sind Loyalität, Gastfreundschaft, Familienruhm, persönliche Stärke und Flexibilität.</p><div class='table-wrap'><table><thead><tr><th>Beispiele</th><th>Namen</th></tr></thead><tbody><tr><td>Männer</td><td>Arved, Bogren, Darvek, Jarven, Kazrik, Radvek, Valtan, Zorik</td></tr><tr><td>Frauen</td><td>Alzena, Brisela, Ilyena, Marzena, Milara, Oleska, Valeska, Elsvara</td></tr><tr><td>Familien</td><td>Braszyn, Karvicz, Woldarek, Dravnik, Ostrovik, Valdranek, Falkovic</td></tr></tbody></table></div>`
+          },
+          {
+            heading: "Rudavische Kultur",
+            html: `<p>Die rudavische Kultur dominiert das große Zentrum Caldrias, zentrale Binnenländer, Flussräume und weite Agrargebiete. Rudava ist wahrscheinlich eine der flächenmäßig größten Kulturregionen und bildet eine zentrale Grundlage valdorischer Macht.</p><p>Das Zentrum war zu groß, um überall direkt kontrolliert zu werden. Große Güter, lokale Gemeinden, regionale Fürsten und weitläufige Adelsbesitzungen prägten eine Kultur der Netzwerke, Dorfgemeinschaften, Großfamilien und lokalen Patrone.</p><p>Rudavisch besitzt klare starke Betonungen, lange Vokale, viele Endungen, Patronymik und Kurzformen. Ein Mensch kann im Alltag, in Dokumenten und im Familienkreis unterschiedliche Namensformen tragen. Werte sind Ausdauer, Loyalität, Gastfreundschaft, Familienpflicht und Geduld.</p><div class='table-wrap'><table><thead><tr><th>Beispiele</th><th>Namen</th></tr></thead><tbody><tr><td>Männer</td><td>Aleksar, Dragomir, Fedoran, Mirovan, Radomir, Velimir, Yarodan, Zorin</td></tr><tr><td>Frauen</td><td>Darena, Ilyana, Katerin, Milena, Nadeva, Svetara, Varena, Zorina</td></tr><tr><td>Familien</td><td>Belavin, Dragorin, Karsov, Mirov, Radavin, Velikov, Tarasov, Ilvarin</td></tr></tbody></table></div>`
+          },
+          {
+            heading: "Tirassische Kulturfamilie",
+            html: `<p>Die tirassische Kulturfamilie dominiert die heutigen unabhängigen Nordstaaten: Aereth, Norvain, Sorevia, Karvain, Terevon, Halvek, Edrain, Lyras, Bravena, Vareza und Ossera. Sie ist keine völlig einheitliche Kultur, sondern eine Familie verwandter Nordkulturen.</p><p>Der Name stammt von Tirassa, einem alten nordcaldrischen Begriff für die dicht besiedelten Handels- und Küstengebiete des Nordens. Viele Städte, Häfen, kleinere Täler, Weinregionen, regionale Märkte, Fürstenhöfe, Kaufmannshäuser und Adelsfamilien prägten diese Kultur.</p><p>Tirassische Sprachen und Dialekte besitzen viele Vokale, weichere Übergänge, Doppelkonsonanten, melodische Satzrhythmen, Kurzformen und starke lokale Akzente. Typische Elemente sind -io, -aro, -ano, -essa, -era, -avi, -ello und -enzo. Öffentliches Auftreten, Plätze, Feste, politische Reden, Prozessionen, Stadtversammlungen und Streitkultur sind besonders wichtig.</p><div class='table-wrap'><table><thead><tr><th>Beispiele</th><th>Namen</th></tr></thead><tbody><tr><td>Männer</td><td>Arelio, Cariano, Cassero, Elario, Marceno, Norelio, Valerio, Maravio</td></tr><tr><td>Frauen</td><td>Alessara, Calessa, Cassia, Eliana, Marena, Noelia, Tavessa, Solena</td></tr><tr><td>Familien</td><td>Bellaro, Carenza, Montavere, Orselli, Vescari, Serrano, Tavaro, Lorceni</td></tr></tbody></table></div>`
+          },
+          {
+            heading: "Übergangszonen",
+            html: `<p>Kulturgrenzen folgen nicht exakt Staatsgrenzen. Karvain ist eine Übergangszone zwischen südöstlichen, zentralen und tirassischen Einflüssen. Bravena besitzt starke südöstliche und zentrale Einflüsse. Edrain liegt zwischen tirassischer und rudavischer Tradition.</p><p>Varethis ist als Hauptstadt stark vermischt und besitzt eine eigene imperiale Hofkultur, in der archaische Reichsnamen, Verwaltungsstile, Hofsprache und Dynastiepolitik bewusst gepflegt werden. Sorevia besitzt wegen seiner östlichen Hauptgebiete und seiner westlichen Exklave regionale Unterschiede. Morovia entwickelte sich separat aus später valdorischer Handels- und Hofsprache.</p>`
           }
         ]
       },
@@ -1537,8 +1703,17 @@
       { id: "geografie", kind: "region", label: "Caldria", x: "18%", y: "42%", color: "#b67c2d", tip: "Westliche Großinsel; fast vollständig menschlich geprägt." },
       { id: "valdoria", kind: "state", label: "Valdoria", x: "22%", y: "61%", color: "#7b1f25", tip: "Menschliches Kaiserreich im Westen und Süden Caldrias." },
       { id: "valdoria", kind: "city", label: "Varethis", x: "37%", y: "48%", color: "#a83238", tip: "Kaiserliche Hauptstadt nördlich der südöstlichen Bucht Caldrias." },
-      { id: "sorevia", kind: "city", label: "Sorevia", x: "21%", y: "25%", color: "#9a6a2f", tip: "Nordcaldrische Handelsrepublik unter Hochkonsul Marcen Morov." },
-      { id: "nord-caldria", kind: "region", label: "Nordstaaten", x: "29%", y: "28%", color: "#9a6a2f", tip: "Elf faktisch unabhängige Staaten, die Valdoria weiterhin als rebellische Reichsgebiete betrachtet." },
+      { id: "nord-caldria", kind: "state", label: "Aereth", x: "28%", y: "24%", color: "#e5c94f", tip: "Nördliches Königreich mit alter Krone, Weinwirtschaft und pro-valdorischem Hochadel.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Halvek", x: "22.5%", y: "34.5%", color: "#f1efe3", tip: "Westlicher Seen- und Feuchtlandstaat mit Holz, Fischerei und schwierigen Landwegen.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Terevon", x: "28%", y: "36%", color: "#6fa3dd", tip: "Zentral-nördliches Fürstentum; stabil, arm und stark von Adelsbeziehungen geprägt.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Norvain", x: "35%", y: "31.5%", color: "#5478b3", tip: "Nordöstliches Veteranenkönigreich mit starker Bogenschützentradition.", minor: true },
+      { id: "sorevia", kind: "state", label: "Sorevia", x: "41.8%", y: "39.5%", color: "#5f9472", tip: "Östlich gelegene Handelsrepublik unter Hochkonsul Marcen Morov.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Edrain", x: "31.5%", y: "43%", color: "#d88b52", tip: "Zentraler Adelsstaat mit funktionierender alter Verwaltung und pro-imperialer Elite.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Vareza", x: "21%", y: "48.5%", color: "#aeb3b8", tip: "Westlich-südwestliche Handelsrepublik; Sorevias Konkurrentin und Textilzentrum.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Bravena", x: "32%", y: "52%", color: "#eadb70", tip: "Südliches Zentrum; Republik aus Bürgern, Veteranen und lokalen Gemeinden.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Karvain", x: "38%", y: "56%", color: "#c96a73", tip: "Südöstlicher Grenzstaat mit Festungen und ständigem Druck aus Valdoria.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Lyras", x: "20.5%", y: "60%", color: "#b87894", tip: "Südwestliche Republik und wichtigster Befürworter eines lockeren Nordbundes.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Ossera", x: "32.5%", y: "62%", color: "#7fc9c4", tip: "Türkis markierte Freie Stadt am unteren Zentrum Nord-Caldrias.", minor: true },
       { id: "geografie", kind: "water", label: "Westsee", x: "25%", y: "35%", color: "#496f86", tip: "Großer Binnensee im Norden Caldrias." },
       { id: "geografie", kind: "water", label: "Südwestsee", x: "13%", y: "57%", color: "#496f86", tip: "Küstennahe Seeregion im Südwesten Caldrias." },
       { id: "geografie", kind: "water", label: "Südbucht", x: "37%", y: "63%", color: "#496f86", tip: "Große südöstliche Bucht Caldrias und wichtiger Zugang zum Zentralmeer." },
@@ -1560,6 +1735,18 @@
       { id: "geografie", kind: "water", label: "Nordostsee", x: "80%", y: "29%", color: "#496f86", tip: "Nördlicher See nahe den Feenlanden." },
       { id: "geografie", kind: "water", label: "Südostküste", x: "84%", y: "58%", color: "#496f86", tip: "Fluss- und Küstenräume der südöstlichen Landmasse." },
       { id: "geografie", kind: "region", label: "Südinseln", x: "62%", y: "74%", color: "#b67c2d", tip: "Südliche Inseln und Halbinseln am Rand des Zentralmeers." }
+    ];
+
+    const cultureZoneData = [
+      { label: "Tirassisch", x: "29.5%", y: "37%", w: "29%", h: "28%", r: "-7deg", color: "#d6b24d", tip: "Nördliche Kulturfamilie der Nordstaaten: Städte, Häfen, Öffentlichkeit, Handel, Wein und lokale Varianten." },
+      { label: "Rudavisch", x: "34%", y: "57%", w: "34%", h: "29%", r: "5deg", color: "#5b73b8", tip: "Zentrale Agrar- und Flusskultur: Großfamilien, Patronage, Dorfnetzwerke, Tiefe und Versorgung." },
+      { label: "Haldrenisch", x: "24%", y: "72%", w: "30%", h: "25%", r: "-15deg", color: "#8e5f46", tip: "Südliche und südwestliche Kultur: Landgüter, Pflicht, Hausgemeinschaft, harte Sprache und schwere Kriegstradition." },
+      { label: "Vezkarisch", x: "43%", y: "66%", w: "25%", h: "24%", r: "13deg", color: "#9f628a", tip: "Südöstliche Grenz- und Flusskultur: flexibel, farbig, familienbetont, militärisch beweglich." },
+      { label: "Edrain", x: "31.5%", y: "44%", w: "11%", h: "8%", r: "5deg", color: "#93a56a", tip: "Übergang zwischen tirassischer und rudavischer Tradition.", variant: "transition small" },
+      { label: "Bravena", x: "33%", y: "52%", w: "12%", h: "8%", r: "-8deg", color: "#c4b85f", tip: "Mischraum mit südöstlichen und zentralen Einflüssen.", variant: "transition small" },
+      { label: "Karvain", x: "39%", y: "57%", w: "11%", h: "7%", r: "4deg", color: "#c46d72", tip: "Grenzübergang zwischen vezkarischen, rudavischen und tirassischen Einflüssen.", variant: "transition small" },
+      { label: "Varethis", x: "37%", y: "49%", w: "10%", h: "7%", r: "0deg", color: "#f1d28c", tip: "Gemischte imperiale Hofkultur mit archaischen Reichsnamen und alt-valdorischer Verwaltungstradition.", variant: "transition small" },
+      { label: "Morovia", x: "58.7%", y: "49.1%", w: "8%", h: "6%", r: "0deg", color: "#7db5c8", tip: "Separat entwickelte Handels- und Hofkultur aus später valdorischer Sprache.", variant: "small" }
     ];
 
     const articlesEn = [
@@ -1598,10 +1785,11 @@
           "Key point": "Morovian Strait"
         },
         sections: [
-          { heading: "Caldria", html: "<p>Caldria is the great western island and is almost entirely human-dominated. About sixty percent belongs to the Empire of Valdoria, especially the west, the south and important agricultural heartlands. The rest consists of roughly fifteen smaller city-states, principalities and kingdoms.</p>" },
+          { heading: "Caldria", html: "<p>Caldria is the great western island and is almost entirely human-dominated. About sixty percent belongs to the Empire of Valdoria, especially the west, the south and important agricultural heartlands. The rest consists of roughly fifteen smaller city-states, principalities and kingdoms.</p><p>Culturally, Caldria is not uniform. Its human cultures descend from Old Valdorian foundations, but split into Haldrenic, Vezkaric, Rudavic and Tirassic macro-regions. See <a href='#/kulturen-caldria'>Cultures of Caldria</a>.</p>" },
           { heading: "Eastern great landmass", html: "<p>The eastern landmass contains several major power centers. Elyndra, the great elven realm, lies in the northwest. In the center rise the mountains of Dhuram-Khaz, where the dwarves built their economic power in valleys, cliff-cities and rock settlements. In the south lie the dry plains, deserts and oasis towns of the Gorash tribal confederation.</p>" },
           { heading: "Central Sea", html: "<p>The Central Sea has a geopolitical role similar to a medieval Mediterranean. Whoever controls its ports, chokepoints and trade routes influences diplomacy, grain trade, fleet movement and war financing. Morovia owes its special position to this sea.</p>" },
-          { heading: "Northeastern jungle", html: "<p>The far northeast of the eastern landmass is covered by extremely dense jungle. It is sparsely populated, hard to cross and closely associated with the fae. For many realms, it is more myth than governable territory.</p>" }
+          { heading: "Northeastern jungle", html: "<p>The far northeast of the eastern landmass is covered by extremely dense jungle. It is sparsely populated, hard to cross and closely associated with the fae. For many realms, it is more myth than governable territory.</p>" },
+          { heading: "Culture overlay", html: "<p>The world map now has a switchable culture layer. It shows Caldria’s large human culture families as soft spaces over the political map: Tirassic in the north, Rudavic in the center, Haldrenic in the south and southwest, and Vezkaric in the southeast. Transition zones such as Karvain, Bravena, Edrain, Sorevia and Varethis are intentionally not divided by hard borders.</p>" }
         ]
       },
       {
@@ -1623,6 +1811,7 @@
         sections: [
           { heading: "Territory and capital", html: "<p>Valdoria controls about sixty percent of Caldria. It possesses important coasts, fertile land and access to the Central Sea. The capital Varethis lies north of the great southeastern bay of Caldria and connects the imperial heartland to trade routes toward Morovia and Elyndra.</p><p>With more than 100,000 inhabitants, Varethis is enormous for the era: political center, imperial seat, military hub, religiously important city and vast market. Unlike clean maritime Morava, Varethis is older, more chaotic, socially harsher and full of noble residences, poor districts and veterans.</p>" },
           { heading: "Political system", html: "<p>The empire is a hereditary monarchy with an imperial-feudal mixed system. The emperor is strong, but not absolute. Crown lands, duchies, counties, principalities, semi-autonomous border regions and privileged cities form a realm that is tightly administered in its core and looser at its edges.</p>" },
+          { heading: "Cultural regions", html: "<p>Valdoria is not a culturally uniform block. The south and southwest are strongly Haldrenic, the center is Rudavic, and the southeast is Vezkaric. Varethis itself has a mixed imperial court culture where archaic imperial names and Old Valdorian administrative forms are deliberately preserved. The northern breakaway states mostly belong to the Tirassic culture family.</p><p>These differences explain why loyalty to the empire, regional noble politics, military traditions and everyday culture do not work the same way everywhere in Valdoria.</p>" },
           { heading: "House Varell", html: "<p>Valdoria has been ruled by House Varell for roughly 800 years. The dynasty founded the realm after Aldren I Varell, later called Aldren the Unifier, subdued Caldria in a long war of unification. The dynasty’s official justification remains that the Varells protect the humans of Caldria.</p><p>The dynasty is ancient, but not peaceful. Its history includes brother wars, fratricide, succession crises and a strict male inheritance principle. See also <a href='#/kaiserhaus-varell'>Imperial House Varell</a>.</p>" },
           { heading: "The current emperor", html: "<p>Emperor Edric IV Varell is 49, politically mediocre, marked by war and neither especially loved nor hated. He was never the first choice: his older brother Corvin was considered the natural heir, but officially died decades ago. Edric inherited a role for which he was never seen as ideal.</p><p>His twin sons Noael and Aennis are already competing for influence, noble support, religious recognition, military allies and the future succession. Edric officially favors neither son, apparently on purpose, to keep both controllable.</p><div class='portrait-grid'><figure class='portrait-card'><img src='assets/edric-iv-varell.png' alt='Portrait of Emperor Edric IV Varell'><figcaption><strong>Emperor Edric IV Varell</strong>Current emperor of Valdoria; war-worn, cautious and politically contested.</figcaption></figure></div>" },
           { heading: "Power base", html: "<p>Valdoria is the world’s leading power because several strengths combine: largest population, huge agriculture, heavy cavalry, good administration, a major fleet, important trade routes, strong castles, siege expertise and a vast tax base.</p><p>On paper, Valdoria remains Suvelia’s strongest power. In practice it is constrained by war damage, regional noble power, breakaway northern states and significant war debts to Morovian banks. Those debts do not control Valdoria, but repayment schedules, interest and new crises matter politically.</p>" },
@@ -1646,15 +1835,15 @@
         sections: [
           {
             heading: "Overview",
-            html: `<p>North Caldria consists of eleven de facto independent states four years after the end of the Valdorian Civil War. Valdoria does not officially recognize their independence and still regards them as rebellious imperial territories.</p><p>The states have no common government, no permanent defensive alliance and no unified political ideology. They share a certain North Caldrish identity and the experience of civil war, but mostly pursue their own interests. No state is clearly strong enough to dominate the north.</p><p>Politically, the region contains two kingdoms, four principalities, two republics, two trade republics and one free city.</p>`
+            html: `<p>North Caldria consists of eleven de facto independent states four years after the end of the Valdorian Civil War. Valdoria does not officially recognize their independence and still regards them as rebellious imperial territories.</p><p>The states have no common government, no permanent defensive alliance and no unified political ideology. They share a certain North Caldrish identity and the experience of civil war, but mostly pursue their own interests. No state is clearly strong enough to dominate the north.</p><p>Politically, the region contains two kingdoms, four principalities, two republics, two trade republics and one free city. Culturally, North Caldria mostly belongs to the Tirassic culture family: more urban, public, trade-facing and locally varied than the Valdorian center.</p>`
           },
           {
             heading: "State register",
-            html: `<div class='table-wrap'><table><thead><tr><th>State</th><th>Form and center</th><th>Character</th><th>Strength</th><th>Weakness or danger</th></tr></thead><tbody><tr><td><b>Aereth</b></td><td>Hereditary monarchy; House Aereth; capital Caerath; western to northwestern interior</td><td>Old land with young independence; revived historical royal title</td><td>Population, agriculture, wine economy, old landed nobility, cavalry families</td><td>Shortage of money, loyalty fractures, pro-Valdorian high nobility</td></tr><tr><td><b>Norvain</b></td><td>Hereditary monarchy; capital Rovan; eastern to northeastern north</td><td>Proud veteran kingdom born from the civil war</td><td>Archers, veterans, fortified towns, officers, militias</td><td>Small economic base, demographic weakness, coup danger</td></tr><tr><td><b>Sorevia</b></td><td>Trade republic; High Consul Marcen Morov; capital Sorev; northwestern coast</td><td>Trade, diplomacy, banks and Morov networks</td><td>Harbors, luxury goods, finance, international relations, privately armed ships</td><td>Distrust from neighbors and secret financial support from Morovia</td></tr><tr><td><b>Karvain</b></td><td>Hereditary principality; capital Karven; southern edge on Valdoria</td><td>Border state under constant reconquest pressure</td><td>Old Valdorian fortresses, border surveillance, fast local mobilization</td><td>Extreme strategic vulnerability</td></tr><tr><td><b>Terevon</b></td><td>Hereditary principality; capital Terenhal; northern interior</td><td>Classic small feudal state of towns, castles, villages, valleys and noble houses</td><td>Compact rule, personal court politics, local loyalty</td><td>Poverty, family feuds, old war debts</td></tr><tr><td><b>Halvek</b></td><td>Hereditary principality; capital Halvar; western north near lakes and wetlands</td><td>Rough regional state with a strong local identity</td><td>Timber, fishing, river trade, small shipyards, hard-to-control terrain</td><td>Poor land connections and frequent border conflicts</td></tr><tr><td><b>Edrain</b></td><td>Hereditary principality; capital Edras; central north</td><td>Conservative noble state with strong institutional continuity</td><td>Old administration, officials, judges, local administrative families</td><td>Strong pro-Valdorian elite</td></tr><tr><td><b>Lyras</b></td><td>Presidential republic; capital Lyren; central-northern trade space</td><td>Moderate republican experiment and leading advocate of a northern league</td><td>Political institutions, diplomacy, veterans, citizen militia</td><td>Internal factions, pro-Valdorian counter-movement, town-country split</td></tr><tr><td><b>Bravena</b></td><td>Republic; capital Braven; eastern interior</td><td>Veteran and citizen state formed from towns, landowners, officers and peasant communities</td><td>Political mobilization, active population, former rebel organizers</td><td>Weak economy; exiled princely family may return with Valdorian help</td></tr><tr><td><b>Vareza</b></td><td>Oligarchic trade republic; Full Council of Merchants; capital Varez; northeastern coast</td><td>Countermodel to Sorevia and independent North Caldrish trade power</td><td>Textiles, sea trade, merchant houses, tolls, smaller banks, trade with Elyndra</td><td>Extreme oligarchy, old weak fleet, looming worker revolt</td></tr><tr><td><b>Ossera</b></td><td>Free city; capital Ossera; between several larger northern states</td><td>Small neutral city-state and diplomatic meeting place</td><td>Markets, mediation, inns, crafts, transit trade, conferences</td><td>Almost no strategic depth, militarily weak, full of spies</td></tr></tbody></table></div>`
+            html: `<div class='table-wrap'><table><thead><tr><th>State</th><th>Form and center</th><th>Character</th><th>Strength</th><th>Weakness or danger</th></tr></thead><tbody><tr><td><b>Aereth</b></td><td>Hereditary monarchy; House Aereth; capital Caerath; northern space</td><td>Old land with young independence; revived historical royal title</td><td>Population, agriculture, wine economy, old landed nobility, cavalry families</td><td>Shortage of money, loyalty fractures, pro-Valdorian high nobility</td></tr><tr><td><b>Norvain</b></td><td>Hereditary monarchy; capital Rovan; northeastern space</td><td>Proud veteran kingdom born from the civil war</td><td>Archers, veterans, fortified towns, officers, militias</td><td>Small economic base, demographic weakness, coup danger</td></tr><tr><td><b>Sorevia</b></td><td>Trade republic; High Consul Marcen Morov; capital Sorev; eastern coast of North Caldria</td><td>Trade, diplomacy, banks and Morov networks</td><td>Harbors, luxury goods, finance, international relations, privately armed ships</td><td>Distrust from neighbors and secret financial support from Morovia</td></tr><tr><td><b>Karvain</b></td><td>Hereditary principality; capital Karven; southeastern edge on Valdoria</td><td>Border state under constant reconquest pressure</td><td>Old Valdorian fortresses, border surveillance, fast local mobilization</td><td>Extreme strategic vulnerability</td></tr><tr><td><b>Terevon</b></td><td>Hereditary principality; capital Terenhal; central-northern space</td><td>Classic small feudal state of towns, castles, villages, valleys and noble houses</td><td>Compact rule, personal court politics, local loyalty</td><td>Poverty, family feuds, old war debts</td></tr><tr><td><b>Halvek</b></td><td>Hereditary principality; capital Halvar; western middle space near lakes and wetlands</td><td>Rough regional state with a strong local identity</td><td>Timber, fishing, river trade, small shipyards, hard-to-control terrain</td><td>Poor land connections and frequent border conflicts</td></tr><tr><td><b>Edrain</b></td><td>Hereditary principality; capital Edras; central north</td><td>Conservative noble state with strong institutional continuity</td><td>Old administration, officials, judges, local administrative families</td><td>Strong pro-Valdorian elite</td></tr><tr><td><b>Lyras</b></td><td>Presidential republic; capital Lyren; southwestern interior</td><td>Moderate republican experiment and leading advocate of a northern league</td><td>Political institutions, diplomacy, veterans, citizen militia</td><td>Internal factions, pro-Valdorian counter-movement, town-country split</td></tr><tr><td><b>Bravena</b></td><td>Republic; capital Braven; southern center</td><td>Veteran and citizen state formed from towns, landowners, officers and peasant communities</td><td>Political mobilization, active population, former rebel organizers</td><td>Weak economy; exiled princely family may return with Valdorian help</td></tr><tr><td><b>Vareza</b></td><td>Oligarchic trade republic; Full Council of Merchants; capital Varez; western to southwestern space</td><td>Countermodel to Sorevia and independent North Caldrish trade power</td><td>Textiles, sea trade, merchant houses, tolls, smaller banks, trade with Elyndra</td><td>Extreme oligarchy, old weak fleet, looming worker revolt</td></tr><tr><td><b>Ossera</b></td><td>Free city; capital Ossera; lower center, turquoise small state</td><td>Small neutral city-state and diplomatic meeting place</td><td>Markets, mediation, inns, crafts, transit trade, conferences</td><td>Almost no strategic depth, militarily weak, full of spies</td></tr></tbody></table></div>`
           },
           {
             heading: "Map distribution and axes",
-            html: `<p>The rough distribution places Sorevia, Halvek and Aereth in the northwest; Edrain, Terevon, Lyras and Ossera in the central north; Norvain, Bravena and Vareza in the northeast; and Karvain on the southern frontier with remaining Valdoria.</p><div class='timeline'><div class='timeline-item'><b>Western trade axis</b>Sorevia, Aereth and Halvek connect coastal trade, wine and grain lands, timber, fishing and waterways.</div><div class='timeline-item'><b>Central political axis</b>Lyras, Edrain, Terevon and Ossera form the space for league projects, conservative administration, dynastic intrigue and diplomatic conferences.</div><div class='timeline-item'><b>Eastern rivalry axis</b>Norvain, Bravena and Vareza combine veteran politics, republican mobilization and economic rivalry.</div><div class='timeline-item'><b>Valdorian front</b>Karvain lives directly with the question of when Valdoria returns, and would be either the first battlefield or the first secret compromise candidate.</div></div>`
+            html: `<p>On the current detail map, Aereth lies at the far north. Halvek sits west below it, Terevon in the central-northern space and Norvain northeast of it. Sorevia occupies the eastern coastal zone. Edrain lies in the center, Vareza in the west to southwest, Bravena in the southern center, Karvain on the southeastern frontier, Lyras in the southwest and Ossera as the turquoise free city at the lower center.</p><div class='timeline'><div class='timeline-item'><b>Northern crown arc</b>Aereth, Terevon and Norvain form the northern prestige and defense zone between old crown, feudal state and veteran kingdom.</div><div class='timeline-item'><b>Western pressure space</b>Halvek, Vareza and Lyras connect waterways, trade rivalry, republican politics and social tension.</div><div class='timeline-item'><b>Eastern trade edge</b>Sorevia controls the green eastern coastal zone and stands economically against Vareza, politically against Lyras and diplomatically under Morov suspicion.</div><div class='timeline-item'><b>Southern front</b>Bravena, Karvain and Ossera lie close to Valdoria’s pressure zone: mobilization, fortresses and diplomatic mediation meet directly here.</div></div>`
           },
           {
             heading: "Aereth",
@@ -1820,7 +2009,7 @@
           "Greatest secret": "hidden financial aid from Morovia"
         },
         sections: [
-          { heading: "Overview", html: "<p>Sorevia is a human trade republic on the northwestern coast of Caldria and one of the eleven states of <a href='#/nord-caldria'>North Caldria</a>. It is led by High Consul Marcen Morov, a cousin and close friend of King Dawson Morov.</p><p>Sorevia is explicitly not a Morovian colony. It has its own political institutions, merchant families, interests, military forces and independent republican tradition.</p>" },
+          { heading: "Overview", html: "<p>Sorevia is a human trade republic on the eastern coast of North Caldria and one of the eleven states of <a href='#/nord-caldria'>North Caldria</a>. It is led by High Consul Marcen Morov, a cousin and close friend of King Dawson Morov.</p><p>Sorevia is explicitly not a Morovian colony. It has its own political institutions, merchant families, interests, military forces and independent republican tradition.</p>" },
           { heading: "Political importance", html: "<p>That a Morov heads Sorevia makes the family a transnational power factor. House Morov rules Morovia, influences international banking and holds an important position in North Caldria.</p><p>For Valdoria this is delicate: the empire recognizes Morovia as sovereign, but must also watch Morov networks operate in a region that only recently slipped from direct imperial influence.</p><p>The High Consul is elected by wealthy citizens, serves five years and can be re-elected without limit. Marcen is not a ceremonial speaker, but a very strong head of government.</p>" },
           { heading: "Relationship with Morovia", html: "<p>Morovia’s influence in Sorevia is strong, but not the same as full control. Family ties, banking relationships and shared commercial interests make exchange with Morovia easier; no significant anti-Morov party currently exists.</p><p>Marcen did not come to power entirely on his own. Morovian money helped him with political organization, contacts, campaigns, economic stabilization and networks. This support was not public and was not presented as official Morovian intervention.</p>" },
           { heading: "Economy and fleet", html: "<p>The most important power group in Sorevia is the banks, not guilds, dockworkers or traditional noble families. Sorevia benefits from Morovian banks, trade contacts, international credit relationships, shipping and access to foreign markets. Its key economic sectors are luxury goods and finance.</p><p>Sorevia relies heavily on privately armed ships. They escort trade, fight pirates, carry out armed transports and can take on military tasks in emergencies.</p>" },
@@ -1847,6 +2036,31 @@
           { heading: "Kobolds", html: "<p>Kobolds are clever traders, economically skilled, multilingual and present in many cities as intermediaries. They are also heavily discriminated against and stereotyped as greedy, dishonest or disloyal. Many of these accusations are racist clichés.</p><p>Because of exclusion, kobolds develop strong family, trade and diaspora networks. Morovia is especially important to many of them.</p>" },
           { heading: "Fae", html: "<p>Fae are somewhat smaller than humans, humanoid, but visibly alien. They are the only known species with genuine supernatural abilities. These powers are rare, weak and difficult to control, and do not reshape battlefields. Their most important homeland is likely the dense northeastern jungle.</p>" },
           { heading: "Giants", html: "<p>Giants are intelligent humanoids about 3 to 4 meters tall. They do not form a great empire, but live in individual clans. A giant clan can matter militarily without making giants a world power.</p>" }
+        ]
+      },
+      {
+        id: "kulturen-caldria",
+        title: "Cultures of Caldria",
+        type: "Culture article",
+        subtitle: "Caldria’s present human cultures descend from Old Valdorian culture, but diverged regionally from about 750 years before the present.",
+        tags: ["Caldria", "culture", "Haldrenic", "Vezkaric", "Rudavic", "Tirassic", "Old Valdorian", "language", "names"],
+        infobox: {
+          "Origin": "Old Valdorian culture",
+          "Divergence": "from ca. 750 years before the present",
+          "Families": "Haldrenic, Vezkaric, Rudavic, Tirassic",
+          "Borders": "not identical with state borders",
+          "Special case": "Morovia developed separately"
+        },
+        sections: [
+          { heading: "Principle", html: `<p>Caldria is not culturally divided into clean blocks. Its human cultures form four large regional families with transition zones. All descend from Old Valdorian culture, which spread across almost all of Caldria after the imperial foundation and then diverged regionally around 750 years before the present.</p><p>The differences are large, but not absolute. A Haldren from the deep south and a Tirassian from Sorevia may feel clearly foreign to one another while still sharing religious assumptions, old imperial chronicles, related legal concepts, many words and basic social categories.</p>` },
+          { heading: "Culture map", html: `<p>The culture layer shows the large spaces roughly over the political map: Tirassic in the north, Rudavic in the center, Haldrenic in the south and southwest, and Vezkaric in the southeast. Dashed zones mark mixed areas such as Edrain, Bravena, Karvain, Varethis and Sorevia.</p><p>The borders are deliberately soft. Karvain, Bravena and Edrain lie between traditions; Varethis has its own imperial court culture; Sorevia has regional differences because of its eastern main territories and western exclave; Morovia developed separately from later Valdorian trade and court language.</p>` },
+          { heading: "Old Valdorian culture", html: `<p>Old Valdorian culture was not originally the culture of all Caldria, but of the organized political and military core from which Valdoria arose. It was shaped by townspeople, landowners, professional soldiers, officials, merchants, jurists, temple administrations and large family associations.</p><p>Its key ideas were law, property, duty, public order, military service, family and religious legitimacy. Importance came not only through birth, but also through office, wealth, military rank, education, family network and public reputation.</p><p>The Old Valdorian city was fortified, administered and understood politically: walls, squares, temple districts, markets, granaries, waterworks and public notice spaces made it a community rather than just a cluster of houses. This inheritance survives strongly in Lyras, Sorevia, Vareza, Ossera and Morovia.</p>` },
+          { heading: "Divergence", html: `<p>After Aldren I Varell founded the empire, the Crown sent officials, veterans, merchants, priests, artisans, administrators and noble families into almost every part of the new realm. In the first generation, officials in the north and officers in the south could still use the same administrative language, similar names and imperial laws.</p><p>About fifty years after the foundation, unity slowly began to break apart. Geography, marriage circles, military specialization, economy, weaker direct control and regional everyday language separated south, center, southeast and north over generations.</p>` },
+          { heading: "Haldrenic culture", html: `<p>Haldrenic culture dominates the south, deep southwest, large southern interior lands and parts of the southern coast. Its name derives from Haldra, an old southern macro-region that survived as a cultural and geographic term.</p><p>Haldra was shaped by military colonies, estates, fortified roads, veteran settlements and royal forests. Landholding, personal duty, military tradition, household continuity and precise contracts became especially important.</p><p>Haldrenic sounds hard: stronger consonants, hard endings, compound terms and long family names. Typical elements are -rik, -mar, -win, -wald, -hart, -gard, -hild and -mund. Values include reliability, duty, care for property, honesty in contracts and suspicion toward waste.</p><div class='table-wrap'><table><thead><tr><th>Examples</th><th>Names</th></tr></thead><tbody><tr><td>Men</td><td>Alerik, Albrik, Berwald, Brunmar, Hadrik, Othmar, Volkhard, Wilhart</td></tr><tr><td>Women</td><td>Adelra, Alwena, Berhild, Brunela, Marhild, Rovina, Thelena, Haldrina</td></tr><tr><td>Families</td><td>Falkenau, Dornwald, Eisenhain, Rotfeld, Silbermark, Steinwehr, Rabenmark</td></tr></tbody></table></div>` },
+          { heading: "Vezkaric culture", html: `<p>Vezkaric culture lies in the southeast, southeastern coastal space, eastern frontier and river region between center and coast. Vezkar was originally a larger southeastern river and borderland.</p><p>The southeast was shaped by southern military settlers, central farmers, merchants, border nobles, refugees and officials. Changing borders, fortifications, trade markets and mixed settlements made it hard, flexible, local and cosmopolitan at the same time.</p><p>Vezkaric has strong consonant clusters, softer endings, shifting stress, double forms and many shortened names. Typical elements are -vek, -szan, -ren, -mar, -vicz, -nik, -ara and -ena. Values include loyalty, hospitality, family renown, personal strength and flexibility.</p><div class='table-wrap'><table><thead><tr><th>Examples</th><th>Names</th></tr></thead><tbody><tr><td>Men</td><td>Arved, Bogren, Darvek, Jarven, Kazrik, Radvek, Valtan, Zorik</td></tr><tr><td>Women</td><td>Alzena, Brisela, Ilyena, Marzena, Milara, Oleska, Valeska, Elsvara</td></tr><tr><td>Families</td><td>Braszyn, Karvicz, Woldarek, Dravnik, Ostrovik, Valdranek, Falkovic</td></tr></tbody></table></div>` },
+          { heading: "Rudavic culture", html: `<p>Rudavic culture dominates central Caldria, the interior, major river spaces and wide agricultural lands. Rudava is probably one of the largest cultural regions by area and a central foundation of Valdorian power.</p><p>The center was too vast to be controlled directly everywhere. Large estates, local communities, regional princes and sprawling noble holdings created a culture of networks, village communities, extended families and local patrons.</p><p>Rudavic has clear strong stresses, long vowels, many endings, patronymics and short forms. A person may use different name forms in everyday life, documents and family circles. Values include endurance, loyalty, hospitality, family duty and patience.</p><div class='table-wrap'><table><thead><tr><th>Examples</th><th>Names</th></tr></thead><tbody><tr><td>Men</td><td>Aleksar, Dragomir, Fedoran, Mirovan, Radomir, Velimir, Yarodan, Zorin</td></tr><tr><td>Women</td><td>Darena, Ilyana, Katerin, Milena, Nadeva, Svetara, Varena, Zorina</td></tr><tr><td>Families</td><td>Belavin, Dragorin, Karsov, Mirov, Radavin, Velikov, Tarasov, Ilvarin</td></tr></tbody></table></div>` },
+          { heading: "Tirassic culture family", html: `<p>The Tirassic culture family dominates the present independent northern states: Aereth, Norvain, Sorevia, Karvain, Terevon, Halvek, Edrain, Lyras, Bravena, Vareza and Ossera. It is not a single uniform culture, but a family of related northern cultures.</p><p>The name comes from Tirassa, an old North Caldrish term for the densely settled trade and coastal spaces of the north. Cities, harbors, small valleys, wine regions, regional markets, princely courts, merchant houses and noble families shaped it.</p><p>Tirassic languages and dialects use many vowels, softer transitions, double consonants, melodic sentence rhythms, short forms and strong local accents. Typical elements are -io, -aro, -ano, -essa, -era, -avi, -ello and -enzo. Public appearance, squares, festivals, speeches, processions, town assemblies and argument culture are especially important.</p><div class='table-wrap'><table><thead><tr><th>Examples</th><th>Names</th></tr></thead><tbody><tr><td>Men</td><td>Arelio, Cariano, Cassero, Elario, Marceno, Norelio, Valerio, Maravio</td></tr><tr><td>Women</td><td>Alessara, Calessa, Cassia, Eliana, Marena, Noelia, Tavessa, Solena</td></tr><tr><td>Families</td><td>Bellaro, Carenza, Montavere, Orselli, Vescari, Serrano, Tavaro, Lorceni</td></tr></tbody></table></div>` },
+          { heading: "Transition zones", html: `<p>Culture borders do not follow state borders exactly. Karvain is a transition zone between southeastern, central and Tirassic influences. Bravena has strong southeastern and central influences. Edrain lies between Tirassic and Rudavic tradition.</p><p>Varethis is heavily mixed as the imperial capital and has its own court culture, where archaic imperial names, administrative styles, court language and dynastic politics are deliberately preserved. Sorevia has regional differences because of its eastern main territories and western exclave. Morovia developed separately from later Valdorian trade and court language.</p>` }
         ]
       },
       {
@@ -1895,8 +2109,17 @@
       { id: "geografie", kind: "region", label: "Caldria", x: "18%", y: "42%", color: "#b67c2d", tip: "Western great island; almost entirely human-dominated." },
       { id: "valdoria", kind: "state", label: "Valdoria", x: "22%", y: "61%", color: "#7b1f25", tip: "Human empire in western and southern Caldria." },
       { id: "valdoria", kind: "city", label: "Varethis", x: "37%", y: "48%", color: "#a83238", tip: "Imperial capital north of Caldria’s southeastern bay." },
-      { id: "sorevia", kind: "city", label: "Sorevia", x: "21%", y: "25%", color: "#9a6a2f", tip: "Northern Caldrish trade republic under High Consul Marcen Morov." },
-      { id: "nord-caldria", kind: "region", label: "Northern states", x: "29%", y: "28%", color: "#9a6a2f", tip: "Eleven de facto independent states that Valdoria still regards as rebellious imperial territories." },
+      { id: "nord-caldria", kind: "state", label: "Aereth", x: "28%", y: "24%", color: "#e5c94f", tip: "Northern kingdom with an old crown, wine economy and pro-Valdorian high nobility.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Halvek", x: "22.5%", y: "34.5%", color: "#f1efe3", tip: "Western lake and wetland state with timber, fishing and poor land routes.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Terevon", x: "28%", y: "36%", color: "#6fa3dd", tip: "Central-northern principality; stable, poor and shaped by noble relationships.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Norvain", x: "35%", y: "31.5%", color: "#5478b3", tip: "Northeastern veteran kingdom with a strong archery tradition.", minor: true },
+      { id: "sorevia", kind: "state", label: "Sorevia", x: "41.8%", y: "39.5%", color: "#5f9472", tip: "Eastern trade republic under High Consul Marcen Morov.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Edrain", x: "31.5%", y: "43%", color: "#d88b52", tip: "Central noble state with functioning old administration and a pro-imperial elite.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Vareza", x: "21%", y: "48.5%", color: "#aeb3b8", tip: "Western-southwestern trade republic; Sorevia’s rival and textile center.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Bravena", x: "32%", y: "52%", color: "#eadb70", tip: "Southern center; republic of citizens, veterans and local communities.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Karvain", x: "38%", y: "56%", color: "#c96a73", tip: "Southeastern border state with fortresses and constant pressure from Valdoria.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Lyras", x: "20.5%", y: "60%", color: "#b87894", tip: "Southwestern republic and leading advocate of a loose northern league.", minor: true },
+      { id: "nord-caldria", kind: "state", label: "Ossera", x: "32.5%", y: "62%", color: "#7fc9c4", tip: "Turquoise free city at the lower center of North Caldria.", minor: true },
       { id: "geografie", kind: "water", label: "Western lake", x: "25%", y: "35%", color: "#496f86", tip: "Large inland lake in northern Caldria." },
       { id: "geografie", kind: "water", label: "Southwest lake", x: "13%", y: "57%", color: "#496f86", tip: "Coastal lake region in southwestern Caldria." },
       { id: "geografie", kind: "water", label: "Southern bay", x: "37%", y: "63%", color: "#496f86", tip: "Great southeastern bay of Caldria and key access to the Central Sea." },
@@ -1918,6 +2141,18 @@
       { id: "geografie", kind: "water", label: "Northeast lake", x: "80%", y: "29%", color: "#496f86", tip: "Northern lake near the fae lands." },
       { id: "geografie", kind: "water", label: "Southeast coast", x: "84%", y: "58%", color: "#496f86", tip: "River and coastal spaces of the southeastern landmass." },
       { id: "geografie", kind: "region", label: "Southern islands", x: "62%", y: "74%", color: "#b67c2d", tip: "Southern islands and peninsulas at the edge of the Central Sea." }
+    ];
+
+    const cultureZoneDataEn = [
+      { label: "Tirassic", x: "29.5%", y: "37%", w: "29%", h: "28%", r: "-7deg", color: "#d6b24d", tip: "Northern culture family of the breakaway states: towns, harbors, public politics, trade, wine and local variants." },
+      { label: "Rudavic", x: "34%", y: "57%", w: "34%", h: "29%", r: "5deg", color: "#5b73b8", tip: "Central agrarian and river culture: extended families, patronage, village networks, depth and supply." },
+      { label: "Haldrenic", x: "24%", y: "72%", w: "30%", h: "25%", r: "-15deg", color: "#8e5f46", tip: "Southern and southwestern culture: estates, duty, household continuity, hard speech and heavy military tradition." },
+      { label: "Vezkaric", x: "43%", y: "66%", w: "25%", h: "24%", r: "13deg", color: "#9f628a", tip: "Southeastern frontier and river culture: flexible, colorful, family-centered and militarily mobile." },
+      { label: "Edrain", x: "31.5%", y: "44%", w: "11%", h: "8%", r: "5deg", color: "#93a56a", tip: "Transition between Tirassic and Rudavic tradition.", variant: "transition small" },
+      { label: "Bravena", x: "33%", y: "52%", w: "12%", h: "8%", r: "-8deg", color: "#c4b85f", tip: "Mixed space with southeastern and central influences.", variant: "transition small" },
+      { label: "Karvain", x: "39%", y: "57%", w: "11%", h: "7%", r: "4deg", color: "#c46d72", tip: "Border transition between Vezkaric, Rudavic and Tirassic influences.", variant: "transition small" },
+      { label: "Varethis", x: "37%", y: "49%", w: "10%", h: "7%", r: "0deg", color: "#f1d28c", tip: "Mixed imperial court culture with archaic imperial names and Old Valdorian administrative traditions.", variant: "transition small" },
+      { label: "Morovia", x: "58.7%", y: "49.1%", w: "8%", h: "6%", r: "0deg", color: "#7db5c8", tip: "Separately developed trade and court culture from later Valdorian language.", variant: "small" }
     ];
 
     const uiText = {
@@ -1942,7 +2177,10 @@
         tocTitle: "Inhalt",
         tocSubTitle: "Kapitel",
         mapAlt: "Karte der bekannten Welt Suvelia",
-        mapNote: "Die Atlasmarker benennen erkennbare Großräume, Seen, Buchten, Routen, Städte und Machtzentren. Sie dienen der Orientierung und zeigen keine exakt vermessenen Grenzen.",
+        mapNote: "Die Atlasmarker benennen erkennbare Großräume, Seen, Buchten, Routen, Städte und Machtzentren. Der Kulturmodus zeigt weiche Kulturzonen, keine exakt vermessenen Grenzen.",
+        mapLayerLabel: "Kartenebene wählen",
+        mapLayerPolitical: "Politik",
+        mapLayerCulture: "Kultur",
         topLabel: "Zurück nach oben"
       },
       en: {
@@ -1966,7 +2204,10 @@
         tocTitle: "Contents",
         tocSubTitle: "Chapters",
         mapAlt: "Map of the known world of Suvelia",
-        mapNote: "The atlas markers name recognizable great regions, lakes, bays, routes, cities and power centers. They are for orientation and do not show precisely measured borders.",
+        mapNote: "The atlas markers name recognizable great regions, lakes, bays, routes, cities and power centers. Culture mode shows soft cultural zones, not precisely measured borders.",
+        mapLayerLabel: "Choose map layer",
+        mapLayerPolitical: "Politics",
+        mapLayerCulture: "Culture",
         topLabel: "Back to top"
       }
     };
@@ -2007,6 +2248,10 @@
 
     function getMarkers() {
       return currentLanguage === "en" ? markerDataEn : markerData;
+    }
+
+    function getCultureZones() {
+      return currentLanguage === "en" ? cultureZoneDataEn : cultureZoneData;
     }
 
     function getUi() {
@@ -2064,11 +2309,24 @@
           <span class="tooltip">${marker.tip}</span>
         </a>
       `).join("");
+      const cultureZones = getCultureZones().map(zone => `
+        <div class="culture-zone ${zone.variant || ""}" style="--x:${zone.x};--y:${zone.y};--w:${zone.w};--h:${zone.h};--r:${zone.r};--c:${zone.color}" aria-label="${zone.label}: ${zone.tip}">
+          <span>${zone.label}</span>
+        </div>
+      `).join("");
+      const layerId = `map-layer-${currentLanguage}`;
       return `
         <figure class="map-plate">
           <div class="map-inner">
+            <input class="map-toggle map-toggle-political" type="radio" name="${layerId}" id="${layerId}-political" checked>
+            <input class="map-toggle map-toggle-culture" type="radio" name="${layerId}" id="${layerId}-culture">
+            <div class="map-layer-controls" aria-label="${ui.mapLayerLabel}">
+              <label for="${layerId}-political">${ui.mapLayerPolitical}</label>
+              <label for="${layerId}-culture">${ui.mapLayerCulture}</label>
+            </div>
             <img src="suvelia-map.png" alt="${ui.mapAlt}">
-            ${markers}
+            <div class="culture-layer" aria-hidden="true">${cultureZones}</div>
+            <div class="marker-layer">${markers}</div>
           </div>
           <figcaption class="map-note">${ui.mapNote}</figcaption>
         </figure>
